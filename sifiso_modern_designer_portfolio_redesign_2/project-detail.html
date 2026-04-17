@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Mobile App - Project Detail</title>
+    <meta name="description" content="Project details for Aura Mobile App.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific styles for Project Detail Page */
+        .project-detail {
+            padding: 8rem 0 4rem;
+        }
+
+        .project-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .bordered-glow-box {
+            border: 1px solid rgba(255, 59, 59, 0.5);
+            border-radius: 24px;
+            padding: 3rem;
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.8), rgba(10, 10, 10, 0.8));
+            box-shadow: inset 0 0 40px rgba(255, 59, 59, 0.05), 0 0 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hero Box */
+        .p-hero-box {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 4rem 3rem;
+        }
+
+        .p-hero-content {
+            flex: 1;
+        }
+
+        .p-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .p-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            line-height: 1.5;
+            font-weight: 300;
+        }
+
+        .p-hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .p-mockup-placeholder {
+            width: 250px;
+            height: 500px;
+            background: linear-gradient(to bottom right, #333, #111);
+            border: 8px solid #222;
+            border-radius: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), -10px 10px 40px var(--accent-red-glow);
+            position: relative;
+        }
+
+        .p-mockup-placeholder::after {
+            content: 'Aura App Mockup';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #666;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Overview Box */
+        .p-section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-red);
+            margin-bottom: 2rem;
+        }
+
+        .p-overview-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-red);
+            margin-bottom: 2rem;
+        }
+
+        .p-overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+        }
+
+        .p-details {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 2rem;
+        }
+
+        .p-detail-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .p-detail-item h3 {
+            font-size: 1rem;
+            color: var(--accent-red);
+            margin-bottom: 0.2rem;
+        }
+
+        .p-detail-item p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .p-about h3 {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .p-about p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        /* Gallery Box */
+        .p-gallery-section {
+            margin-bottom: 2rem;
+        }
+
+        .p-gallery-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--accent-red);
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+        }
+
+        .p-gallery-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .p-gallery-item {
+            width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            border: 2px solid rgba(255, 59, 59, 0.2);
+            overflow: hidden;
+            aspect-ratio: 21/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .placeholder-screens {
+            aspect-ratio: 16/9;
+        }
+
+        .placeholder-interactive {
+            background: #111;
+            color: #fff;
+            border-color: rgba(255, 59, 59, 0.4);
+            aspect-ratio: 16/9;
+        }
+
+        /* Results Box */
+        .p-results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            text-align: center;
+            gap: 2rem;
+        }
+
+        .p-result-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .p-result-number {
+            font-size: 5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .p-result-label {
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* Nav Box */
+        .p-nav-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3rem;
+            margin-top: 2rem;
+        }
+
+        .p-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .p-nav-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .p-nav-link:hover .p-nav-title {
+            text-shadow: 0 0 10px var(--accent-red-glow);
+        }
+
+        .p-nav-arrow {
+            font-size: 1.2rem;
+            color: var(--accent-red);
+            font-weight: 600;
+        }
+
+        .p-nav-img-placeholder {
+            width: 80px;
+            height: 50px;
+            background: #222;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .p-nav-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .p-nav-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.2rem;
+        }
+
+        .p-nav-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent-red);
+        }
+
+        .next .p-nav-text {
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .p-hero-box {
+                flex-direction: column;
+                text-align: center;
+                padding: 3rem 2rem;
+            }
+
+            .p-hero-image {
+                justify-content: center;
+                margin-top: 2rem;
+            }
+
+            .p-overview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .p-details {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                padding-right: 0;
+                padding-bottom: 2rem;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .p-results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .p-nav-box {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">Sifiso<span>...</span></a>
+                <div class="nav-actions">
+                    <a href="index.html#home" class="btn btn-outline">Home</a>
+                    <a href="index.html#testimonials" class="btn btn-outline">Testimoni</a>
+                    <a href="index.html#work" class="btn btn-outline">See my work</a>
+                    <a href="index.html#contact" class="btn btn-red">Contact me</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="project-detail">
+        <div class="project-container">
+
+            <!-- Hero Box -->
+            <section class="p-hero-box bordered-glow-box">
+                <div class="p-hero-content">
+                    <h1 class="p-title text-red">Aura Mobile App</h1>
+                    <p class="p-subtitle">A revolutionary meditation and mindfulness platform designed for daily
+                        wellness.</p>
+                </div>
+                <div class="p-hero-image">
+                    <div class="p-mockup-placeholder"></div>
+                </div>
+            </section>
+
+            <!-- Overview Box -->
+            <section class="p-overview-box bordered-glow-box">
+                <h2 class="p-overview-title">Project Overview</h2>
+                <div class="p-overview-grid">
+                    <div class="p-details">
+                        <div class="p-detail-item">
+                            <h3>Role</h3>
+                            <p>UI/UX Designer</p>
+                        </div>
+                        <div class="p-detail-item">
+                            <h3>Timeline</h3>
+                            <p>3 Months</p>
+                        </div>
+                        <div class="p-detail-item">
+                            <h3>Tools</h3>
+                            <p>Figma, Adobe Creative Suite, Principle</p>
+                        </div>
+                    </div>
+                    <div class="p-about">
+                        <h3>About the Project</h3>
+                        <p>The challenge for the Aura Mobile App was to create an intuitive and immersive experience for
+                            users seeking mental clarity and stress relief. We designed a fluid user interface with
+                            calming visuals, personalized content pathways, and interactive meditation exercises. The
+                            solution involved a clean, minimalist design language accented by warm, organic gradients,
+                            focusing on user flow to ensure seamless navigation and habit-forming features.</p>
+                        <a href="#" class="btn btn-red">Project Link</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Gallery Box -->
+            <section class="p-gallery-section">
+                <h2 class="p-gallery-title">Process Gallery</h2>
+                <div class="p-gallery-stack">
+                    <div class="p-gallery-item placeholder-wireframe">Process Flow Diagram</div>
+                    <div class="p-gallery-item placeholder-design-system">UI Component Library</div>
+                    <div class="p-gallery-item placeholder-screens">Screens Walkthrough</div>
+                    <div class="p-gallery-item placeholder-interactive">Interactive Breathing Exercise UI</div>
+                </div>
+            </section>
+
+            <!-- Results Box -->
+            <section class="p-results-box bordered-glow-box">
+                <h2 class="p-overview-title">Final Results/Impact</h2>
+                <div class="p-results-grid">
+                    <div class="p-result-item">
+                        <span class="p-result-number text-red">20%</span>
+                        <span class="p-result-label">increase in user engagement</span>
+                    </div>
+                    <div class="p-result-item">
+                        <span class="p-result-number text-red">4.9</span>
+                        <span class="p-result-label">average app store rating</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Next/Prev Navigation -->
+            <nav class="p-nav-box bordered-glow-box">
+                <a href="#" class="p-nav-link prev">
+                    <span class="p-nav-arrow">&lt;</span>
+                    <div class="p-nav-img-placeholder"></div>
+                    <div class="p-nav-text">
+                        <span class="p-nav-label">Next Project</span>
+                        <span class="p-nav-title text-red">Nexus Dashboard</span>
+                    </div>
+                </a>
+                <a href="#" class="p-nav-link next">
+                    <div class="p-nav-text">
+                        <span class="p-nav-label">Previous Project</span>
+                        <span class="p-nav-title text-red">Luminary Store</span>
+                    </div>
+                    <div class="p-nav-img-placeholder"></div>
+                    <span class="p-nav-arrow">&gt;</span>
+                </a>
+            </nav>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <a href="#" class="back-to-top">back to top</a>
+        </div>
+    </footer>
+</body>
+
+</html>

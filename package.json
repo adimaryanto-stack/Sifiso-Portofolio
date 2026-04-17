@@ -1,0 +1,19 @@
+{
+  "name": "sifiso-monorepo",
+  "version": "0.0.0",
+  "packageManager": "npm@10.8.2",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "turbo": "latest"
+  }
+}
