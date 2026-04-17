@@ -1,4 +1,4 @@
-# Sifiso-Portofolio-
+# Sifiso-Portofolio
 Redesign HTML template by FearlessFlyer
 
 # 📋 Product Requirements Document (PRD)
