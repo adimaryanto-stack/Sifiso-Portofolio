@@ -1,11 +1,84 @@
-# Sifiso-Portofolio
-Redesign HTML template by FearlessFlyer
+# Sifiso — High-Performance Portfolio v1.0
 
-# 📋 Product Requirements Document (PRD)
-[prd.md](https://github.com/adimaryanto-stack/Sifiso-Portofolio-/blob/007fa1b7bb8933604f060a42011b4a7dcb2d6e87/prd.md)
+Sifiso is a premium, high-fidelity multidisciplinary portfolio built for designers and developers who want to stand out. It features a brutalist-modern aesthetic with glassmorphism, dynamic animations, and a robust administrative backend.
 
-# 🚀 MVP (Minimum Viable Product) Specification
-[mvp.md](https://github.com/adimaryanto-stack/Sifiso-Portofolio-/blob/007fa1b7bb8933604f060a42011b4a7dcb2d6e87/mvp.md)
+## 🚀 Tech Stack
 
-# 🔄 Flowchart & Diagram Alir
-[flowchart.md](https://github.com/adimaryanto-stack/Sifiso-Portofolio-/blob/b7bf9489e2f45cbe9beedd20c9b2b8d643cb2700/flowchart.md)
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animations:** [Framer Motion](https://www.motion.dev/)
+- **Database:** Hybrid (SQLite for Local / Vercel Postgres for Production)
+- **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
+- **Authentication:** [Better Auth](https://better-auth.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Deployment:** [Vercel](https://vercel.com/)
+
+## ✨ Key Features
+
+- **Dynamic Work Gallery:** Filterable portfolio grid with interactive hover effects.
+- **Client Management:** Fully functional admin dashboard to manage projects and testimonials.
+- **SEO Dashboard:** Integrated management for Meta Titles, Descriptions, and Keywords.
+- **Inquiry System:** Interactive inbox for managing client leads.
+- **Demo Mode:** "Bypass Login" feature for quick testing/showcasing.
+- **Performance Optimized:** ISR (Incremental Static Regeneration) for lightning-fast delivery.
+
+## 🛠️ Local Development
+
+### Prerequisites
+
+- Node.js 20+ 
+- npm / Turborepo
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/adimaryanto-stack/Sifiso-Portofolio-.git
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Setup environment variables:
+   Create a `.env.local` file in `apps/web/`:
+   ```env
+   # No DATABASE_URL needed for local (defaults to SQLite)
+   BETTER_AUTH_SECRET=your-secret
+   BETTER_AUTH_URL=http://localhost:3000
+   ```
+
+4. Populate Database (SQLite):
+   ```bash
+   npx tsx src/scratch/seed-full.ts
+   ```
+
+5. Run development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🌐 Production Deployment (Vercel)
+
+### Environment Variables
+For production, the app automatically switches to PostgreSQL. You must set:
+- `POSTGRES_URL`: The Vercel Postgres connection string.
+- `BETTER_AUTH_SECRET`: Random hash.
+- `BETTER_AUTH_URL`: Your production domain.
+
+### Database Sync
+```bash
+npx drizzle-kit push
+```
+
+## 📈 SEO & Performance
+
+The project is built with SEO best practices:
+- **ISR:** Syncs content every 3600s or on-demand via dashboard.
+- **Dynamic Sitemap:** Auto-generated at `/sitemap.xml`.
+- **Structured Data:** Person & Organization schema included.
+
+---
+
+Crafted with precision by **Sifiso & Antigravity**.

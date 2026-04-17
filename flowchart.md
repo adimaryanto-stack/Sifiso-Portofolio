@@ -22,9 +22,9 @@ graph TB
         F[Middleware<br/>Auth Guard]
     end
 
-    subgraph "Supabase Cloud"
-        G[(PostgreSQL 17<br/>via Drizzle ORM)]
-        H[Supabase Storage<br/>Images & Files]
+    subgraph "Data Persistence"
+        G[(Hybrid Database<br/>Postgres Prod / SQLite Local)]
+        H[Vercel Storage<br/>Images & Files]
     end
 
     subgraph "External Services"

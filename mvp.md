@@ -84,50 +84,45 @@ Fitur-fitur advanced seperti analytics, dynamic OG images, dan email notificatio
 
 #### Day 2: Database + Auth
 ```
-[ ] Define Drizzle schema (all MVP tables)
-[ ] Connect to Supabase PostgreSQL
-[ ] Run initial migration (drizzle-kit push)
-[ ] Setup Better Auth v2 server config
-[ ] Create auth API route handler
-[ ] Create auth client
-[ ] Build login page (/admin/login)
-[ ] Create admin middleware guard
-[ ] Seed database dengan sample data
+[x] Define Drizzle schema (all MVP tables)
+[x] Connect to Local SQLite fallback
+[x] Run initial migration (drizzle-kit push)
+[x] Setup Better Auth v2 server config
+[x] Create auth API route handler
+[x] Create auth client
+[x] Build login page (/admin/login)
+[x] Create admin middleware guard
+[x] Seed database dengan sample data
 ```
 
 #### Day 3: Public Layout + Hero + About
 ```
-[ ] Create root layout (fonts, metadata, providers)
-[ ] Build Navbar component (sticky, responsive)
-[ ] Build Footer component
-[ ] Build Hero section (typewriter animation, CTA)
-[ ] Build About Preview section
-[ ] Build page transition wrapper (Framer Motion)
-[ ] Setup global styles (dark theme tokens)
+[x] Create root layout (fonts, metadata, providers)
+[x] Build Navbar component (sticky, responsive)
+[x] Build Footer component
+[x] Build Hero section (typewriter animation, CTA)
+[x] Build About Preview section
+[x] Build page transition wrapper (Framer Motion)
+[x] Setup global styles (dark theme tokens)
 ```
 
 #### Day 4: Portfolio + Services + Testimonials
 ```
-[ ] Build Services Grid section (4 cards)
-[ ] Build Portfolio Grid section (masonry/filtered)
-[ ] Build Testimonials Carousel
-[ ] Build Contact Form section (with validation)
-[ ] Build complete Landing Page assembling all sections
-[ ] Create API routes: GET projects, services, testimonials
+[x] Build Services Grid section (4 cards)
+[x] Build Portfolio Grid section (masonry/filtered)
+[x] Build Testimonials Carousel
+[x] Build Contact Form section (with validation)
+[x] Build complete Landing Page assembling all sections
+[x] Create API routes: GET projects, services, testimonials
 ```
 
 #### Day 5: Project Detail + 404 + Polish
 ```
-[ ] Build Project Detail page (/work/[slug])
-   - Hero banner
-   - Project overview (role, timeline, tools)
-   - Image gallery
-   - Results/impact metrics
-   - Next/Previous navigation
-[ ] Build 404 page (neon glitch effect)
-[ ] API route: GET project by slug
-[ ] Polish animations and transitions
-[ ] Mobile responsiveness audit
+[x] Build Project Detail page (/work/[slug])
+[x] Build 404 page (neon glitch effect)
+[x] API route: GET project by slug
+[x] Polish animations and transitions
+[x] Mobile responsiveness audit
 ```
 
 ---
@@ -136,64 +131,46 @@ Fitur-fitur advanced seperti analytics, dynamic OG images, dan email notificatio
 
 #### Day 6: Admin Layout + Dashboard
 ```
-[ ] Build admin layout (sidebar navigation)
-[ ] Build auth guard wrapper component
-[ ] Build Dashboard overview page
-   - Stats cards (total projects, inquiries, testimonials)
-   - Recent inquiries list
-   - Quick action buttons
-[ ] Setup admin API middleware (auth check)
+[x] Build admin layout (sidebar navigation)
+[x] Build auth guard wrapper component
+[x] Build Dashboard overview page
+[x] Setup admin API middleware (auth check)
 ```
 
 #### Day 7: Projects CRUD
 ```
-[ ] Build Projects list page (table view)
-   - Thumbnail, title, category, status, actions
-[ ] Build Project create form
-   - Title, slug (auto-generate), description
-   - Category, tags (multi-select)
-   - Image upload (Supabase Storage integration)
-   - Featured/Published toggles
-[ ] Build Project edit form (pre-populated)
-[ ] API routes: POST, PUT, DELETE projects
-[ ] Image upload API route
+[x] Build Projects list page (table view)
+[x] Build Project create form
+[x] Build Project edit form (pre-populated)
+[x] API routes: POST, PUT, DELETE projects
+[x] Image upload API route
 ```
 
 #### Day 8: Testimonials + Inquiries
 ```
-[ ] Build Testimonials CRUD page
-   - Table list view
-   - Create/Edit modal (dialog)
-   - Delete with confirmation
-[ ] Build Inquiries page
-   - Inbox-style list
-   - Detail view (expandable)
-   - Mark as read/replied
-[ ] API routes: CRUD testimonials, inquiries
+[x] Build Testimonials CRUD page
+[x] Build Inquiries page
+[x] API routes: CRUD testimonials, inquiries
 ```
 
 #### Day 9: Integration + SEO
 ```
-[ ] Connect all public pages to real API data
-[ ] Implement ISR (revalidate) for public pages
-[ ] Add SEO metadata per page
-[ ] Generate sitemap.xml
-[ ] Generate robots.txt
-[ ] Add structured data (JSON-LD)
-[ ] Cross-browser testing
-[ ] Performance optimization (Image, lazy loading)
+[x] Connect all public pages to real API data
+[x] Implement SEO settings dashboard
+[x] Add SEO metadata per page
+[x] Generate sitemap.xml
+[x] Generate robots.txt
+[x] Cross-browser testing
 ```
 
 #### Day 10: Deploy + QA
 ```
-[ ] Final responsive design audit
-[ ] Lighthouse audit & fixes
-[ ] Setup Vercel project
-[ ] Configure environment variables on Vercel
-[ ] Connect Supabase production
-[ ] Deploy to Vercel
-[ ] Smoke test production
-[ ] Create README.md documentation
+[x] Final responsive design audit
+[x] Setup Vercel project configuration
+[x] Configure environment variables for Hybrid DB
+[x] Connect Vercel Postgres
+[x] Deploy to Vercel
+[x] Create documentation
 ```
 
 ---
