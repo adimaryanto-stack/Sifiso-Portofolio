@@ -1,47 +1,46 @@
-# Production Deployment Guide (Vercel + Supabase)
+# Production Deployment Guide (Vercel + Hybrid DB)
 
-Follow these steps to deploy Sifiso to production and ensure all features work correctly.
+Follow these steps to deploy Sifiso to production and ensure the Hybrid Database (PostgreSQL) and SEO features work correctly.
 
-## 1. Supabase Setup
-- Go to your Supabase Project Settings > Database.
-- Copy the **Connection String (Transaction Mode)** and use it as `DATABASE_URL`.
-- Go to Settings > API and copy the `URL` and `Anon Key`.
+## 1. Vercel Postgres Setup
+Based on your provided resource, the database is identified as:
+- **Internal ID:** `ecfg_aliy3yalh4lokv0dao2ukoihlraa`
+- **Resource Digest:** `5bf6b008a9ec05f6870c476d10b53211797aa000f95aae344ae60f9b422286da`
 
-### Create Storage Bucket
-- Go to **Storage** in Supabase.
-- Create a new bucket named `portfolio`.
-- Make it **Public**.
-- Add a policy to allow `Authenticated` users to upload files if needed, or allow all if you're keeping it simple for now (though authenticated is safer).
+### Linking in Vercel
+1. Go to your **Vercel Dashboard** > **Storage**.
+2. Connect your project to the Postgres database associated with the IDs above.
+3. Vercel will automatically inject the `POSTGRES_URL` environment variable.
 
 ## 2. Environment Variables
 Add these to your Vercel Project Settings:
 
 | Key | Value |
 | --- | --- |
-| `DATABASE_URL` | Your Supabase connection string |
+| `POSTGRES_URL` | (Injected by Vercel Postgres) |
 | `BETTER_AUTH_SECRET` | Generate a random 32-char string |
 | `BETTER_AUTH_URL` | `https://your-domain.vercel.app` |
-| `SUPABASE_URL` | Your Supabase Project URL |
-| `SUPABASE_ANON_KEY` | Your Supabase Anon Key |
-| `NEXT_PUBLIC_SUPABASE_URL` | (Same as above) |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | (Same as above) |
+| `NEXT_PUBLIC_SITE_URL` | `https://your-domain.vercel.app` |
 
 ## 3. Database Migration
-Run this command from your local machine (connected to production DB):
-```bash
-npm run db:push
-```
-This will create the necessary tables on your production Supabase instance.
+To sync your production schema with the Vercel Postgres database:
+1. Ensure your local `.env.local` temporarily contains the production `POSTGRES_URL`.
+2. Run:
+   ```bash
+   npm run db:push
+   ```
+3. Verify that the tables are created in the Vercel Postgres dashboard.
 
 ## 4. Final Audit Checklist
-- [ ] Check responsive navigation on iPhone & Android.
-- [ ] Test form submission in `/get-started`.
-- [ ] Log in to `/admin` to verify Better Auth.
-- [ ] Upload a test project image to verify Supabase Storage.
-- [ ] Verify `https://your-domain.vercel.app/sitemap.xml` exists.
+- [x] **Code Pushed**: Already pushed to GitHub `main` branch.
+- [ ] **Auth Check**: Visit `/admin/login` on production.
+- [ ] **SEO Check**: Go to `/admin/settings` and save a title to verify DB write access.
+- [ ] **Inquiry Check**: Submit the contact form on the live site.
 
-## 5. Deployment
-- Push your code to GitHub.
-- Connect your repo to Vercel.
-- Select `apps/web` as the root directory if prompted (it's a monorepo).
-- Deploy!
+## 5. Deployment Info
+- **Repo**: `https://github.com/adimaryanto-stack/Sifiso-Portofolio.git`
+- **Framework**: Next.js 15 (Turbopack)
+- **Database Logic**: Fallback to SQLite if `POSTGRES_URL` is missing.
+
+---
+Crafted with precision by **Sifiso & Antigravity**.
