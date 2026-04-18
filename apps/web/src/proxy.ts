@@ -8,7 +8,7 @@ export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect /admin routes
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
+  if (pathname.startsWith("/admin") && !pathname.startsWith("/login")) {
     const { data: session } = await betterFetch<Session>(
       "/api/auth/get-session",
       {
@@ -20,7 +20,7 @@ export default async function proxy(request: NextRequest) {
     );
 
     if (!session) {
-      return NextResponse.redirect(new URL("/admin/login", request.url));
+      return NextResponse.redirect(new URL("/login", request.url));
     }
   }
 

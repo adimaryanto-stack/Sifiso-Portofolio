@@ -3,11 +3,11 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 import * as schema from "./db/schema";
 
-const isProduction = process.env.NODE_ENV === "production" || !!process.env.POSTGRES_URL;
+const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: isProduction && process.env.POSTGRES_URL ? "pg" : "sqlite",
+    provider: postgresUrl ? "pg" : "sqlite",
     schema: {
       user: schema.user,
       session: schema.session,
