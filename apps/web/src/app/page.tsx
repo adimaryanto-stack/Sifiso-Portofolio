@@ -13,9 +13,24 @@ import { eq, desc } from "drizzle-orm";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  // Fetch real data from Neon
-  const allTestimonials = await db.select().from(testimonials).where(eq(testimonials.isPublished, true)).limit(3).catch(() => []);
-  const allServices = await db.select().from(services).orderBy(desc(services.createdAt)).limit(4).catch(() => []);
+  // Fetch real data from Neon with explicit mapping to match UI props
+  const rawTestimonials = await db.select().from(testimonials).where(eq(testimonials.isPublished, true)).limit(3).catch(() => []);
+  const rawServices = await db.select().from(services).where(eq(services.isActive, true)).orderBy(desc(services.createdAt)).limit(4).catch(() => []);
+
+  // Map database fields to UI component props
+  const allTestimonials = rawTestimonials.map(t => ({
+    name: t.clientName,
+    title: t.clientTitle || "",
+    avatar: t.avatarUrl,
+    content: t.content
+  }));
+
+  const allServices = rawServices.map(s => ({
+    title: s.title,
+    description: s.description || "",
+    iconName: s.iconName,
+    slug: s.title.toLowerCase().replace(/\s+/g, '-'),
+  }));
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -33,7 +48,7 @@ export default async function Home() {
         <ServicesGrid data={allServices as any} />
  
         {/* Testimonials */}
-        <TestimonialsCarousel data={allTestimonials} />
+        <TestimonialsCarousel data={allTestimonials as any} />
  
         {/* Contact form */}
         <ContactForm />
