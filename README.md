@@ -4,22 +4,22 @@ Sifiso is a premium, high-fidelity multidisciplinary portfolio built for designe
 
 ## 🚀 Tech Stack
 
-- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router + Turbopack)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
 - **Animations:** [Framer Motion](https://www.motion.dev/)
 - **Database:** Hybrid (SQLite for Local / Vercel Postgres for Production)
 - **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
-- **Authentication:** [Better Auth](https://better-auth.com/)
+- **Authentication:** [Better Auth v2](https://better-auth.com/)
 - **Icons:** [Lucide React](https://lucide.dev/)
 - **Deployment:** [Vercel](https://vercel.com/)
 
 ## ✨ Key Features
 
-- **Dynamic Work Gallery:** Filterable portfolio grid with interactive hover effects.
-- **Client Management:** Fully functional admin dashboard to manage projects and testimonials.
-- **SEO Dashboard:** Integrated management for Meta Titles, Descriptions, and Keywords.
-- **Inquiry System:** Interactive inbox for managing client leads.
-- **Demo Mode:** "Bypass Login" feature for quick testing/showcasing.
+- **Dynamic Work Gallery:** Filterable portfolio grid with interactive hover effects and awaited params compatibility.
+- **Client Management:** Fully functional admin dashboard to manage projects and testimonials with image previews.
+- **Dynamic SEO Dashboard:** Integrated management for Meta Titles, Descriptions, and Keywords that update the site in real-time.
+- **Real-time Inquiry System:** Functional contact form connected to a backend inbox for lead management.
+- **Hybrid DB Logic:** Seamlessly switches between local SQLite and production PostgreSQL based on environment.
 - **Performance Optimized:** ISR (Incremental Static Regeneration) for lightning-fast delivery.
 
 ## 🛠️ Local Development

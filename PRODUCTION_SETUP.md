@@ -39,8 +39,13 @@ To sync your production schema with the Vercel Postgres database:
 
 ## 5. Deployment Info
 - **Repo**: `https://github.com/adimaryanto-stack/Sifiso-Portofolio.git`
-- **Framework**: Next.js 15 (Turbopack)
-- **Database Logic**: Fallback to SQLite if `POSTGRES_URL` is missing.
+- **Framework**: Next.js 16 (App Router + Turbopack)
+- **Database Logic**: Automatically switches to PostgreSQL if `POSTGRES_URL` is detected, otherwise defaults to local SQLite for zero-config development.
+- **Node Version**: Recommended 20.x or 22.x on Vercel.
+
+## 6. Common Issues & Solutions
+- **404 Errors on Dynamic Routes**: Ensure you are using the latest version of the code which implements `await params` in `page.tsx` files.
+- **Konektivitas Database**: Jika server Vercel gagal terhubung, pastikan `POSTGRES_URL` sudah mencakup parameter `?sslmode=require` jika diperlukan oleh provider database Anda.
 
 ---
 Crafted with precision by **Sifiso & Antigravity**.

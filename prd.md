@@ -2,21 +2,21 @@
 # Sifiso — Dynamic Portfolio Website
 
 **Version:** 1.0 (Final)  
-**Date:** 17 April 2026  
+**Date:** 18 April 2026  
 **Author:** Antigravity AI  
-**Status:** Completed
+**Status:** Completed & Optimized
 
 ---
 
 ## 1. Executive Summary
 
-**Sifiso** adalah website portfolio dinamis untuk seorang desainer/developer profesional. Versi final ini menggunakan arsitektur modern berbasis **Next.js 15 (App Router)** dalam monorepo Turborepo. Sistem menggunakan model **Hybrid Database**: SQLite (better-sqlite3) untuk pengembangan lokal yang cepat dan Vercel PostgreSQL untuk stabilitas produksi.
+**Sifiso** adalah website portfolio dinamis untuk seorang desainer/developer profesional. Versi final ini menggunakan arsitektur modern berbasis **Next.js 16 (App Router)** dalam monorepo Turborepo. Sistem menggunakan model **Hybrid Database**: SQLite (better-sqlite3) untuk pengembangan lokal yang cepat dan Vercel PostgreSQL untuk stabilitas produksi.
 
 ### Tujuan Utama
 - Membangun website portfolio yang **dinamis** — semua konten (projects, testimonials, inquiries, SEO) dikelola via Dashboard.
 - Memberikan kesan **premium** dengan "Bright Mode" Admin yang bersih dan Landing Page yang futuristik.
 - Menyediakan **Offline-First Development** menggunakan database lokal tanpa ketergantungan internet.
-- Mengoptimalkan **SEO** melalui dashboard meta-editor yang terintegrasi.
+- Mengoptimalkan **SEO** melalui dashboard meta-editor yang terintegrasi (Dynamic SEO).
 
 ---
 
@@ -35,19 +35,17 @@
 ### 3.1 Frontend
 | Teknologi | Versi | Fungsi |
 |-----------|-------|--------|
-| Next.js | 14 (App Router) | Framework utama + SSR/SSG |
-| React | 18 | UI Library |
+| Next.js | 16 (App Router) | Framework utama + SSR/SSG |
+| React | 19 | UI Library |
 | Tailwind CSS | v4 | Styling utility-first |
-| shadcn/ui | Latest | Component Library (Radix-based) |
 | Framer Motion | Latest | Animasi & transisi |
 | Lucide React | Latest | Icon system |
 
 ### 3.2 Backend
 | Teknologi | Versi | Fungsi |
 |-----------|-------|--------|
-| Next.js API Routes | 14 | REST API endpoints |
+| Next.js Server Actions | 16 | Core logic & form handling |
 | Drizzle ORM | Latest | Type-safe database queries |
-| PostgreSQL | 17+ (Supabase) | Database utama |
 | Better Auth | v2 | Authentication admin |
 | Supabase Storage | Latest | File/image uploads |
 | Resend | Latest | Email service untuk contact form |
