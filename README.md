@@ -72,6 +72,17 @@ For production, the app automatically switches to PostgreSQL. You must set:
 npx drizzle-kit push
 ```
 
+## 🛠️ Troubleshooting: Vercel Monorepo
+
+If you see the error **"No Next.js version detected"**:
+1. Go to your **Vercel Project Settings**.
+2. Under **General**, find **Root Directory**.
+3. Set it to `apps/web`.
+4. Ensure the **Framework Preset** is set to **Next.js**.
+5. Redeploy the project.
+
+I have included a `vercel.json` in the root to automate this, but manual verification in the dashboard is recommended.
+
 ## 📈 SEO & Performance
 
 The project is built with SEO best practices:

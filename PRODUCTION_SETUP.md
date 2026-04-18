@@ -12,6 +12,9 @@ Based on your provided resource, the database is identified as:
 2. Connect your project to the Postgres database associated with the IDs above.
 3. Vercel will automatically inject the `POSTGRES_URL` environment variable.
 
+### 💡 Vercel Monorepo Tip
+Because this is a Turborepo, Vercel needs to know the **Root Directory** for the web application. I have added `vercel.json` to handle this, but please verify in your **Project Settings > General** that the **Root Directory** is set to `apps/web`.
+
 ## 2. Environment Variables
 Add these to your Vercel Project Settings:
 
