@@ -13,15 +13,15 @@ import { eq, desc } from "drizzle-orm";
 export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  // Fetch real data from Neon with explicit mapping to match UI props
-  const rawTestimonials = await db.select().from(testimonials).where(eq(testimonials.isPublished, true)).limit(3).catch(() => []);
-  const rawServices = await db.select().from(services).where(eq(services.isActive, true)).orderBy(desc(services.createdAt)).limit(4).catch(() => []);
+  // Fetch real data from Neon - Removing filters temporarily to ensure connectivity
+  const rawTestimonials = await db.select().from(testimonials).orderBy(desc(testimonials.createdAt)).limit(3).catch(() => []);
+  const rawServices = await db.select().from(services).orderBy(desc(services.createdAt)).limit(4).catch(() => []);
 
-  // Map database fields to UI component props
+  // Map database fields to UI component props with improved safety
   const allTestimonials = rawTestimonials.map(t => ({
-    name: t.clientName,
-    title: t.clientTitle || "",
-    avatar: t.avatarUrl,
+    name: t.clientName || "Anonymous",
+    title: t.clientTitle || "Client",
+    avatar: t.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.clientName)}&background=random`,
     content: t.content
   }));
 
