@@ -25,6 +25,13 @@ Add these to your Vercel Project Settings:
 | `BETTER_AUTH_URL` | `https://your-domain.vercel.app` |
 | `NEXT_PUBLIC_SITE_URL` | `https://your-domain.vercel.app` |
 
+### 🔑 Secret Generation
+You can generate a random secret for `BETTER_AUTH_SECRET` by running:
+```bash
+openssl rand -base64 32
+```
+or visit [generate-secret.vercel.app](https://generate-secret.vercel.app/32).
+
 ## 3. Database Migration
 To sync your production schema with the Vercel Postgres database:
 1. Ensure your local `.env.local` temporarily contains the production `POSTGRES_URL`.
