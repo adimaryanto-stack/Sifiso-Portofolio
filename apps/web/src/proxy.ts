@@ -4,7 +4,7 @@ import type { auth } from "@/lib/auth";
 
 type Session = typeof auth.$Infer.Session;
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect /admin routes
