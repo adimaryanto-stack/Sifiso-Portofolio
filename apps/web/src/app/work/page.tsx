@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import React from "react";
 import { Navbar } from "@/components/layout/navbar";
 import { WorkGalleryInteractive } from "@/components/sections/work-gallery-interactive";
