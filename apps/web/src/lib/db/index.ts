@@ -5,13 +5,18 @@ import postgres from "postgres";
 import * as schema from "./schema";
 import path from "path";
 
-const isProduction = process.env.NODE_ENV === "production" || !!process.env.POSTGRES_URL;
+const isProduction = process.env.NODE_ENV === "production";
+const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
 
 function createDb() {
-  if (isProduction && process.env.POSTGRES_URL) {
+  if (postgresUrl) {
     console.log("🚀 Using Production PostgreSQL Database");
-    const client = postgres(process.env.POSTGRES_URL, { connect_timeout: 10 });
+    const client = postgres(postgresUrl, { connect_timeout: 10 });
     return drizzlePg(client, { schema });
+  }
+
+  if (isProduction) {
+    console.log("⚠️ WARNING: Running in production but no PostgreSQL URL found! Falling back to SQLite (may fail on read-only filesystems).");
   }
 
   console.log("💻 Using Local SQLite Database");

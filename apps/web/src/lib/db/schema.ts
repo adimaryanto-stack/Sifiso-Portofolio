@@ -13,7 +13,7 @@ import {
 import { relations, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
-const isPg = !!process.env.POSTGRES_URL;
+const isPg = !!(process.env.POSTGRES_URL || process.env.DATABASE_URL);
 
 // Helper to switch between PG and SQLite
 export const table = (isPg ? pgTable : sqliteTable) as any;
