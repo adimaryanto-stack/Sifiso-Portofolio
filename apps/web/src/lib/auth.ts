@@ -3,9 +3,11 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { db } from "./db";
 import * as schema from "./db/schema";
 
+const isProduction = process.env.NODE_ENV === "production" || !!process.env.POSTGRES_URL;
+
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
-    provider: "sqlite",
+    provider: isProduction && process.env.POSTGRES_URL ? "pg" : "sqlite",
     schema: {
       user: schema.user,
       session: schema.session,
@@ -13,6 +15,8 @@ export const auth = betterAuth({
       verification: schema.verification,
     },
   }),
+  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: process.env.BETTER_AUTH_URL || process.env.NEXT_PUBLIC_SITE_URL,
   emailAndPassword: {
     enabled: true,
   },
