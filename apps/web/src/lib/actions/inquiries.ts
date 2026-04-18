@@ -40,45 +40,57 @@ export async function deleteInquiry(id: string) {
 
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function sendInquiry(data: typeof inquiries.$inferInsert) {
   try {
     // 1. Save to Database
     const [inserted] = await db.insert(inquiries).values(data).returning();
     
-    // 2. Send Email Notification (if API key is set)
-    if (process.env.RESEND_API_KEY) {
+    // 2. Send Email Notification
+    const apiKey = process.env.RESEND_API_KEY;
+    
+    if (apiKey) {
+      const resend = new Resend(apiKey);
       try {
-        await resend.emails.send({
-          from: "Portfolio <onboarding@resend.dev>",
+        const emailResponse = await resend.emails.send({
+          from: "onboarding@resend.dev",
           to: "adimaryanto@gmail.com",
-          subject: `New Inquiry: ${data.subject || "No Subject"}`,
+          subject: `New Inquiry: ${data.subject || "Portfolio Contact"}`,
           html: `
-            <div style="font-family: sans-serif; line-height: 1.6; color: #333;">
-              <h2 style="color: #000;">New Inquiry from ${data.name}</h2>
-              <p><strong>Email:</strong> ${data.email}</p>
-              ${data.budgetRange ? `<p><strong>Budget Range:</strong> ${data.budgetRange}</p>` : ""}
-              <p><strong>Message:</strong></p>
-              <div style="background: #f4f4f4; padding: 15px; border-radius: 5px;">
-                ${data.message.replace(/\n/g, "<br>")}
+            <div style="font-family: sans-serif; padding: 20px; color: #333; border: 1px solid #eee; border-radius: 10px;">
+              <h2 style="color: #ea580c; border-bottom: 2px solid #ea580c; padding-bottom: 10px;">New Inquiry from ${data.name}</h2>
+              <div style="margin-top: 20px;">
+                <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+                ${data.phoneNumber ? `<p><strong>WhatsApp/Phone:</strong> ${data.phoneNumber}</p>` : ""}
+                ${data.budgetRange ? `<p><strong>Budget Range:</strong> ${data.budgetRange}</p>` : ""}
+                ${data.subject ? `<p><strong>Project Type:</strong> ${data.subject}</p>` : ""}
               </div>
-              <p style="font-size: 12px; color: #666; margin-top: 20px;">
-                Sent from your Sifiso Portfolio. You can manage this inquiry in your <a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin/inquiries">Admin Dashboard</a>.
-              </p>
+              <div style="margin-top: 20px; background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                <p style="margin-top: 0; font-weight: bold;">Message:</p>
+                <p style="white-space: pre-wrap;">${data.message}</p>
+              </div>
+              <footer style="margin-top: 30px; font-size: 11px; color: #888; border-top: 1px solid #eee; pt: 10px;">
+                Sent from Sifiso Portfolio Production System.
+              </footer>
             </div>
           `,
         });
+
+        if (emailResponse.error) {
+          console.error("Resend API Error:", emailResponse.error);
+        } else {
+          console.log("✅ Email sent successfully via Resend:", emailResponse.data?.id);
+        }
       } catch (emailError) {
-        console.error("Failed to send email notification", emailError);
-        // We don't return error here because the DB insert succeeded
+        console.error("Critical Email Exception:", emailError);
       }
+    } else {
+      console.warn("⚠️ skipping email: RESEND_API_KEY not found in environment.");
     }
 
     revalidatePath("/admin/inquiries");
     return { success: true };
   } catch (error: any) {
-    console.error("Failed to send inquiry", error);
+    console.error("DB/General Error in sendInquiry:", error);
     return { success: false, error: error.message };
   }
 }
