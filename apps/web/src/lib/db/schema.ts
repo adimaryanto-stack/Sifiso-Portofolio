@@ -1,193 +1,243 @@
 import {
+  pgTable,
+  text as pgText,
+  integer as pgInteger,
+  timestamp as pgTimestamp,
+  boolean as pgBoolean,
+} from "drizzle-orm/pg-core";
+import {
   sqliteTable,
-  text,
-  integer,
+  text as sqText,
+  integer as sqInteger,
 } from "drizzle-orm/sqlite-core";
 import { relations, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
-// Better Auth v2 Schema (SQLite version)
-export const user = sqliteTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: integer("email_verified", { mode: "boolean" }).notNull(),
-  image: text("image"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+const isPg = !!process.env.POSTGRES_URL;
+
+// Helper to switch between PG and SQLite
+export const table = (isPg ? pgTable : sqliteTable) as any;
+
+// Helper for Text columns
+const textCol = (name: string) => {
+  if (isPg) return pgText(name);
+  return sqText(name);
+};
+
+// Helper for Integer columns
+const intCol = (name: string) => {
+  if (isPg) return pgInteger(name);
+  return sqInteger(name);
+};
+
+// Helper for Boolean columns
+const boolCol = (name: string) => {
+  if (isPg) return pgBoolean(name);
+  return sqInteger(name, { mode: "boolean" });
+};
+
+// Helper for Timestamp columns
+const tsCol = (name: string) => {
+  if (isPg) return pgTimestamp(name, { mode: "date", withTimezone: true });
+  return sqInteger(name, { mode: "timestamp" });
+};
+
+// Helper for JSON columns
+const jsonCol = (name: string) => {
+  // In PG we use text as a fallback if not using jsonb, or just text if it's simpler
+  // User had mode: json in SQLite which stores as text anyway
+  if (isPg) return pgText(name); 
+  return sqText(name, { mode: "json" });
+};
+
+// Helper for dynamic "now" timestamp
+const nowHelper = () => {
+  if (isPg) return sql`now()`; // PostgreSQL native timestamp default
+  return sql`(strftime('%s', 'now') * 1000)`; // SQLite unix timestamp in ms
+};
+
+// Better Auth v2 Schema (Hybrid version)
+export const user = table("user", {
+  id: textCol("id").primaryKey(),
+  name: textCol("name").notNull(),
+  email: textCol("email").notNull().unique(),
+  emailVerified: boolCol("email_verified").notNull(),
+  image: textCol("image"),
+  createdAt: tsCol("created_at").notNull(),
+  updatedAt: tsCol("updated_at").notNull(),
 });
 
-export const session = sqliteTable("session", {
-  id: text("id").primaryKey(),
-  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-  token: text("token").notNull().unique(),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  userId: text("user_id")
+export const session = table("session", {
+  id: textCol("id").primaryKey(),
+  expiresAt: tsCol("expires_at").notNull(),
+  token: textCol("token").notNull().unique(),
+  createdAt: tsCol("created_at").notNull(),
+  updatedAt: tsCol("updated_at").notNull(),
+  ipAddress: textCol("ip_address"),
+  userAgent: textCol("user_agent"),
+  userId: textCol("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
 });
 
-export const account = sqliteTable("account", {
-  id: text("id").primaryKey(),
-  accountId: text("account_id").notNull(),
-  providerId: text("provider_id").notNull(),
-  userId: text("user_id")
+export const account = table("account", {
+  id: textCol("id").primaryKey(),
+  accountId: textCol("account_id").notNull(),
+  providerId: textCol("provider_id").notNull(),
+  userId: textCol("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  accessToken: text("access_token"),
-  refreshToken: text("refresh_token"),
-  idToken: text("id_token"),
-  accessTokenExpiresAt: integer("access_token_expires_at", { mode: "timestamp" }),
-  refreshTokenExpiresAt: integer("refresh_token_expires_at", { mode: "timestamp" }),
-  scope: text("scope"),
-  password: text("password"),
-  createdAt: integer("created_at", { mode: "timestamp" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).notNull(),
+  accessToken: textCol("access_token"),
+  refreshToken: textCol("refresh_token"),
+  idToken: textCol("id_token"),
+  accessTokenExpiresAt: tsCol("access_token_expires_at"),
+  refreshTokenExpiresAt: tsCol("refresh_token_expires_at"),
+  scope: textCol("scope"),
+  password: textCol("password"),
+  createdAt: tsCol("created_at").notNull(),
+  updatedAt: tsCol("updated_at").notNull(),
 });
 
-export const verification = sqliteTable("verification", {
-  id: text("id").primaryKey(),
-  identifier: text("identifier").notNull(),
-  value: text("value").notNull(),
-  expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
-  createdAt: integer("created_at", { mode: "timestamp" }),
-  updatedAt: integer("updated_at", { mode: "timestamp" }),
+export const verification = table("verification", {
+  id: textCol("id").primaryKey(),
+  identifier: textCol("identifier").notNull(),
+  value: textCol("value").notNull(),
+  expiresAt: tsCol("expires_at").notNull(),
+  createdAt: tsCol("created_at"),
+  updatedAt: tsCol("updated_at"),
 });
 
 // Sifiso Portfolio Core Schema
 
-export const projects = sqliteTable("projects", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  title: text("title").notNull(),
-  slug: text("slug").notNull().unique(),
-  description: text("description"),
-  brief: text("brief"),
-  role: text("role"),
-  timeline: text("timeline"),
-  tools: text("tools"),
-  clientName: text("client_name"),
-  category: text("category"),
-  thumbnailUrl: text("thumbnail_url"),
-  heroImageUrl: text("hero_image_url"),
-  processGallery: text("process_gallery", { mode: "json" }),
-  resultsMetrics: text("results_metrics", { mode: "json" }),
-  sortOrder: integer("sort_order").default(0),
-  isFeatured: integer("is_featured", { mode: "boolean" }).default(false),
-  isPublished: integer("is_published", { mode: "boolean" }).default(false),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
-  createdBy: text("created_by").references(() => user.id, { onDelete: "set null" }),
+export const projects = table("projects", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  title: textCol("title").notNull(),
+  slug: textCol("slug").notNull().unique(),
+  description: textCol("description"),
+  brief: textCol("brief"),
+  role: textCol("role"),
+  timeline: textCol("timeline"),
+  tools: textCol("tools"),
+  clientName: textCol("client_name"),
+  category: textCol("category"),
+  thumbnailUrl: textCol("thumbnail_url"),
+  heroImageUrl: textCol("hero_image_url"),
+  processGallery: jsonCol("process_gallery"),
+  resultsMetrics: jsonCol("results_metrics"),
+  sortOrder: intCol("sort_order").default(0),
+  isFeatured: boolCol("is_featured").default(false),
+  isPublished: boolCol("is_published").default(false),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
+  createdBy: textCol("created_by").references(() => user.id, { onDelete: "set null" }),
 });
 
-export const projectImages = sqliteTable("project_images", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  projectId: text("project_id")
+export const projectImages = table("project_images", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  projectId: textCol("project_id")
     .notNull()
     .references(() => projects.id, { onDelete: "cascade" }),
-  imageUrl: text("image_url").notNull(),
-  caption: text("caption"),
-  sortOrder: integer("sort_order").default(0),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+  imageUrl: textCol("image_url").notNull(),
+  caption: textCol("caption"),
+  sortOrder: intCol("sort_order").default(0),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
 });
 
-export const services = sqliteTable("services", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  title: text("title").notNull(),
-  description: text("description"),
-  iconName: text("icon_name"),
-  sortOrder: integer("sort_order").default(0),
-  isActive: integer("is_active", { mode: "boolean" }).default(true),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const services = table("services", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  title: textCol("title").notNull(),
+  description: textCol("description"),
+  iconName: textCol("icon_name"),
+  sortOrder: intCol("sort_order").default(0),
+  isActive: boolCol("is_active").default(true),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
 });
 
-export const testimonials = sqliteTable("testimonials", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  clientName: text("client_name").notNull(),
-  clientTitle: text("client_title"),
-  content: text("content").notNull(),
-  avatarUrl: text("avatar_url"),
-  rating: integer("rating").default(5),
-  isFeatured: integer("is_featured", { mode: "boolean" }).default(false),
-  isPublished: integer("is_published", { mode: "boolean" }).default(true),
-  sortOrder: integer("sort_order").default(0),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const testimonials = table("testimonials", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  clientName: textCol("client_name").notNull(),
+  clientTitle: textCol("client_title"),
+  content: textCol("content").notNull(),
+  avatarUrl: textCol("avatar_url"),
+  rating: intCol("rating").default(5),
+  isFeatured: boolCol("is_featured").default(false),
+  isPublished: boolCol("is_published").default(true),
+  sortOrder: intCol("sort_order").default(0),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
 });
 
-export const inquiries = sqliteTable("inquiries", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  phoneNumber: text("phone_number"),
-  socialMedia: text("social_media"),
-  message: text("message").notNull(),
-  subject: text("subject"),
-  budgetRange: text("budget_range"),
-  projectInterest: text("project_interest").references(() => projects.id, { onDelete: "set null" }),
-  status: text("status").default("unread"),
-  isRead: integer("is_read", { mode: "boolean" }).default(false),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const inquiries = table("inquiries", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  name: textCol("name").notNull(),
+  email: textCol("email").notNull(),
+  phoneNumber: textCol("phone_number"),
+  socialMedia: textCol("social_media"),
+  message: textCol("message").notNull(),
+  subject: textCol("subject"),
+  budgetRange: textCol("budget_range"),
+  projectInterest: textCol("project_interest").references(() => projects.id, { onDelete: "set null" }),
+  status: textCol("status").default("unread"),
+  isRead: boolCol("is_read").default(false),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
 });
 
-export const tags = sqliteTable("tags", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  name: text("name").notNull().unique(),
-  slug: text("slug").notNull().unique(),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const tags = table("tags", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  name: textCol("name").notNull().unique(),
+  slug: textCol("slug").notNull().unique(),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
 });
 
-export const projectTags = sqliteTable("project_tags", {
-  projectId: text("project_id")
+export const projectTags = table("project_tags", {
+  projectId: textCol("project_id")
     .notNull()
     .references(() => projects.id, { onDelete: "cascade" }),
-  tagId: text("tag_id")
+  tagId: textCol("tag_id")
     .notNull()
     .references(() => tags.id, { onDelete: "cascade" }),
 });
 
-export const pricingPackages = sqliteTable("pricing_packages", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  name: text("name").notNull(),
-  price: text("price").notNull(),
-  badge: text("badge"),
-  features: text("features", { mode: "json" }),
-  isPopular: integer("is_popular", { mode: "boolean" }).default(false),
-  sortOrder: integer("sort_order").default(0),
-  isActive: integer("is_active", { mode: "boolean" }).default(true),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const pricingPackages = table("pricing_packages", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  name: textCol("name").notNull(),
+  price: textCol("price").notNull(),
+  badge: textCol("badge"),
+  features: jsonCol("features"),
+  isPopular: boolCol("is_popular").default(false),
+  sortOrder: intCol("sort_order").default(0),
+  isActive: boolCol("is_active").default(true),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
 });
 
-export const siteSettings = sqliteTable("site_settings", {
-  key: text("key").primaryKey(),
-  value: text("value", { mode: "json" }).notNull(),
-  updatedAt: integer("updated_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const siteSettings = table("site_settings", {
+  key: textCol("key").primaryKey(),
+  value: jsonCol("value").notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
 });
 
-export const creativeProcessSteps = sqliteTable("creative_process_steps", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  stepNumber: text("step_number").notNull(),
-  title: text("title").notNull(),
-  subtitle: text("subtitle"),
-  description: text("description"),
-  iconName: text("icon_name"),
-  sortOrder: integer("sort_order").default(0),
-  isActive: integer("is_active", { mode: "boolean" }).default(true),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const creativeProcessSteps = table("creative_process_steps", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  stepNumber: textCol("step_number").notNull(),
+  title: textCol("title").notNull(),
+  subtitle: textCol("subtitle"),
+  description: textCol("description"),
+  iconName: textCol("icon_name"),
+  sortOrder: intCol("sort_order").default(0),
+  isActive: boolCol("is_active").default(true),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
 });
 
-export const quotes = sqliteTable("quotes", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  content: text("content").notNull(),
-  author: text("author").notNull(),
-  sortOrder: integer("sort_order").default(0),
-  isActive: integer("is_active", { mode: "boolean" }).default(true),
-  createdAt: integer("created_at", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const quotes = table("quotes", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  content: textCol("content").notNull(),
+  author: textCol("author").notNull(),
+  sortOrder: intCol("sort_order").default(0),
+  isActive: boolCol("is_active").default(true),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
 });
 
 // Relations
@@ -223,13 +273,13 @@ export const inquiriesRelations = relations(inquiries, ({ one }) => ({
   }),
 }));
 
-export const loginLogs = sqliteTable("login_logs", {
-  id: text("id").primaryKey().$defaultFn(() => uuidv4()),
-  email: text("email").notNull(),
-  status: text("status").notNull(), // success, failed
-  ipAddress: text("ip_address"),
-  userAgent: text("user_agent"),
-  timestamp: integer("timestamp", { mode: "timestamp" }).default(sql`(strftime('%s', 'now') * 1000)`).notNull(),
+export const loginLogs = table("login_logs", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  email: textCol("email").notNull(),
+  status: textCol("status").notNull(), // success, failed
+  ipAddress: textCol("ip_address"),
+  userAgent: textCol("user_agent"),
+  timestamp: tsCol("timestamp").default(nowHelper()).notNull(),
 });
 
 export type Project = typeof projects.$inferSelect;

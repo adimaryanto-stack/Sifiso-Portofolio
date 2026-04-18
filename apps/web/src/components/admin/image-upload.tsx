@@ -32,6 +32,10 @@ export function ImageUpload({ onUploadSuccess, defaultImage, bucketName = "portf
     setError(null);
 
     try {
+      if (!supabaseClient) {
+        throw new Error("Image upload is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+      }
+
       // 1. Create a unique file name
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random()}.${fileExt}`;
@@ -47,7 +51,7 @@ export function ImageUpload({ onUploadSuccess, defaultImage, bucketName = "portf
       }
 
       // 3. Get the public URL
-      const { data: { publicUrl } } = supabaseClient.storage
+      const { data: { publicUrl } } = supabaseClient!.storage
         .from(bucketName)
         .getPublicUrl(filePath);
 
