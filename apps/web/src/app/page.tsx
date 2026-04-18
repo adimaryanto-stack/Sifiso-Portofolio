@@ -12,24 +12,29 @@ import { eq, desc } from "drizzle-orm";
 
 export const dynamic = 'force-dynamic';
 
-export default async function Home() {
-  // Fetch real data from Neon - Removing filters temporarily to ensure connectivity
-  const rawTestimonials = await db.select().from(testimonials).orderBy(desc(testimonials.createdAt)).limit(3).catch(() => []);
-  const rawServices = await db.select().from(services).orderBy(desc(services.createdAt)).limit(4).catch(() => []);
+import { unstable_noStore as noStore } from 'next/cache';
 
-  // Map database fields to UI component props with improved safety
+export default async function Home() {
+  // Force this component to bypass any Vercel/Next.js caching mechanisms
+  noStore();
+  
+  // Explicitly pull fresh data from Neon
+  const rawTestimonials = await db.select().from(testimonials).orderBy(desc(testimonials.createdAt)).limit(10);
+  const rawServices = await db.select().from(services).orderBy(desc(services.createdAt)).limit(10);
+
+  // Map database fields to UI component props with extreme safety
   const allTestimonials = rawTestimonials.map(t => ({
-    name: t.clientName || "Anonymous",
-    title: t.clientTitle || "Client",
-    avatar: t.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.clientName)}&background=random`,
-    content: t.content
+    name: t.clientName || "Anonymous Client",
+    title: t.clientTitle || "Partner",
+    avatar: t.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(t.clientName || 'A')}&background=random`,
+    content: t.content || "No feedback provided."
   }));
 
   const allServices = rawServices.map(s => ({
     title: s.title,
     description: s.description || "",
     iconName: s.iconName,
-    slug: s.title.toLowerCase().replace(/\s+/g, '-'),
+    slug: (s.title || "service").toLowerCase().replace(/\s+/g, '-'),
   }));
 
   return (
