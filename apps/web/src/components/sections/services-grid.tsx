@@ -5,38 +5,35 @@ import { motion } from "framer-motion";
 import { Monitor, Smartphone, Code, Layers } from "lucide-react";
 import Link from "next/link";
 
-const services = [
+import * as Icons from "lucide-react";
+
+interface ServiceProp {
+  title: string;
+  description: string;
+  iconName?: string | null;
+  slug?: string;
+  color?: string;
+}
+
+const fallbackServices = [
   {
     title: "UI/UX Design",
     description: "Creating intuitive, aesthetic, and user-centric interfaces that convert and delight.",
-    icon: Monitor,
+    iconName: "Monitor",
     color: "from-blue-500/20 to-transparent",
     slug: "ui-ux-design"
   },
   {
     title: "Web Development",
     description: "Building fast, scalable, and responsive web applications using modern technologies.",
-    icon: Code,
+    iconName: "Code",
     color: "from-red-500/20 to-transparent",
     slug: "web-development"
   },
-  {
-    title: "3D Visualization",
-    description: "Bringing your products to life with stunning 3D renders and interactive visualizations.",
-    icon: Layers,
-    color: "from-purple-500/20 to-transparent",
-    slug: "3d-visualization"
-  },
-  {
-    title: "Branding & Identity",
-    description: "Defining your brand's voice and visual language to stand out in a crowded market.",
-    icon: Smartphone,
-    color: "from-green-500/20 to-transparent",
-    slug: "branding-identity"
-  }
 ];
 
-export function ServicesGrid() {
+export function ServicesGrid({ data }: { data?: ServiceProp[] }) {
+  const displayServices = data && data.length > 0 ? data : fallbackServices;
   return (
     <section id="services" className="py-32 bg-surface/30">
       <div className="container mx-auto px-6">
@@ -50,11 +47,11 @@ export function ServicesGrid() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {services.map((service, index) => {
-            const Icon = service.icon;
+          {displayServices.map((service, index) => {
+            const Icon = (Icons as any)[service.iconName || "Monitor"] || Icons.Monitor;
             return (
               <motion.div
-                key={service.title}
+                key={service.title + index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

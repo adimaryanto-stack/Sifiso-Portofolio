@@ -4,7 +4,14 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 
-const testimonials = [
+interface TestimonialProp {
+  name: string;
+  title: string;
+  avatar?: string | null;
+  content: string;
+}
+
+const fallbackTestimonials = [
   {
     name: "Jane Minoer",
     title: "Project Lead at CreativeCo",
@@ -17,15 +24,10 @@ const testimonials = [
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=2370&auto=format&fit=crop",
     content: "The 3D visualizations created for our product launch were stunning. It completely changed how our customers perceived the value of our offering.",
   },
-  {
-    name: "Soor Nuoda",
-    title: "Brand Strategist",
-    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=2488&auto=format&fit=crop",
-    content: "Precision, soul, and a deep understanding of branding. Sifiso didn't just design a website; they built a digital extension of our identity.",
-  }
 ];
 
-export function TestimonialsCarousel() {
+export function TestimonialsCarousel({ data }: { data?: TestimonialProp[] }) {
+  const displayData = data && data.length > 0 ? data : fallbackTestimonials;
   return (
     <section className="py-32 bg-background border-t border-border/50 overflow-hidden">
       <div className="container mx-auto px-6">
@@ -39,9 +41,9 @@ export function TestimonialsCarousel() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-          {testimonials.map((item, index) => (
+          {displayData.map((item, index) => (
             <motion.div
-              key={item.name}
+              key={item.name + index}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

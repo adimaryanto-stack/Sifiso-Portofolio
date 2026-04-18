@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import Link from "next/link";
 import { Navbar } from "@/components/layout/navbar";
 import { Hero } from "@/components/sections/hero";
@@ -8,8 +6,17 @@ import { ServicesGrid } from "@/components/sections/services-grid";
 import { ProjectGallery } from "@/components/sections/project-gallery";
 import { TestimonialsCarousel } from "@/components/sections/testimonials-carousel";
 import { ContactForm } from "@/components/sections/contact-form";
+import { db } from "@/lib/db";
+import { testimonials, services } from "@/lib/db/schema";
+import { eq, desc } from "drizzle-orm";
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+
+export default async function Home() {
+  // Fetch real data from Neon
+  const allTestimonials = await db.select().from(testimonials).where(eq(testimonials.isPublished, true)).limit(3).catch(() => []);
+  const allServices = await db.select().from(services).orderBy(desc(services.createdAt)).limit(4).catch(() => []);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -18,16 +25,16 @@ export default function Home() {
       <div className="relative z-10">
         {/* About Section */}
         <AboutPreview />
-
+ 
         {/* Project Gallery */}
         <ProjectGallery />
-
+ 
         {/* Services Section */}
-        <ServicesGrid />
-
+        <ServicesGrid data={allServices as any} />
+ 
         {/* Testimonials */}
-        <TestimonialsCarousel />
-
+        <TestimonialsCarousel data={allTestimonials} />
+ 
         {/* Contact form */}
         <ContactForm />
       </div>
