@@ -10,7 +10,7 @@ const isProduction = process.env.NODE_ENV === "production" || !!process.env.POST
 function createDb() {
   if (isProduction && process.env.POSTGRES_URL) {
     console.log("🚀 Using Production PostgreSQL Database");
-    const client = postgres(process.env.POSTGRES_URL);
+    const client = postgres(process.env.POSTGRES_URL, { connect_timeout: 10 });
     return drizzlePg(client, { schema });
   }
 
