@@ -7,7 +7,7 @@ import { Quote } from "lucide-react";
 interface TestimonialProp {
   name: string;
   title: string;
-  avatar?: string | null;
+  avatar?: string;
   content: string;
 }
 
