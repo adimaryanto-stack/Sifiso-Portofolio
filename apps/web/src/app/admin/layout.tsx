@@ -1,5 +1,6 @@
 import React from "react";
 import { AdminSidebar } from "@/components/layout/admin-sidebar";
+import { AdminTransition } from "@/components/admin/admin-transition";
 
 export default function AdminLayout({
   children,
@@ -11,7 +12,9 @@ export default function AdminLayout({
       <AdminSidebar />
       <main className="flex-1 overflow-y-auto bg-surface/30">
         <div className="p-8">
-          {children}
+          <AdminTransition>
+            {children}
+          </AdminTransition>
         </div>
       </main>
     </div>

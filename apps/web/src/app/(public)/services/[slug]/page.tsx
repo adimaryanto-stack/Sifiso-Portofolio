@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { Navbar } from "@/components/layout/navbar";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle2, Zap, BarChart, Shield, Cpu, Monitor, Code, Layers, Smartphone } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Monitor, Code, Layers, Smartphone } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Button } from "@sifiso/ui/components/button";
@@ -51,9 +50,7 @@ export default function ServiceDetailPage() {
   const Icon = detail.icon;
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <div className="container mx-auto px-6 pt-32 pb-24">
         <Link href="/services" className="inline-flex items-center text-secondary hover:text-white transition-colors mb-12 group">
           <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
@@ -84,10 +81,10 @@ export default function ServiceDetailPage() {
              <h2 className="text-3xl font-black mb-8 italic uppercase tracking-widest border-l-4 border-primary pl-6">The Process</h2>
              <div className="space-y-6">
                 {detail.process.map((step, i) => (
-                  <div key={i} className="flex items-center space-x-6 p-8 rounded-3xl bg-surface-elevated/30 border border-border group hover:border-primary/50 transition-colors">
-                    <div className="text-4xl font-black text-primary/20 group-hover:text-primary transition-colors">0{i + 1}</div>
-                    <div className="text-xl font-bold">{step}</div>
-                  </div>
+                   <div key={i} className="flex items-center space-x-6 p-8 rounded-3xl bg-surface-elevated/30 border border-border group hover:border-primary/50 transition-colors">
+                     <div className="text-4xl font-black text-primary/20 group-hover:text-primary transition-colors">0{i + 1}</div>
+                     <div className="text-xl font-bold">{step}</div>
+                   </div>
                 ))}
              </div>
           </div>
@@ -97,10 +94,10 @@ export default function ServiceDetailPage() {
                 <h2 className="text-2xl font-black mb-8 uppercase tracking-widest">Key Benefits</h2>
                 <div className="space-y-6">
                    {detail.benefits.map((benefit, i) => (
-                     <div key={i} className="flex items-start space-x-4">
-                        <CheckCircle2 className="text-primary mt-1 flex-shrink-0" size={20} />
-                        <div className="text-lg text-secondary font-medium">{benefit}</div>
-                     </div>
+                      <div key={i} className="flex items-start space-x-4">
+                         <CheckCircle2 className="text-primary mt-1 flex-shrink-0" size={20} />
+                         <div className="text-lg text-secondary font-medium">{benefit}</div>
+                      </div>
                    ))}
                 </div>
                 
@@ -115,6 +112,6 @@ export default function ServiceDetailPage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

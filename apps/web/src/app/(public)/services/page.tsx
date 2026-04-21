@@ -44,9 +44,7 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <div className="container mx-auto px-6 pt-32 pb-24">
         <motion.div
            initial={{ opacity: 0, y: 30 }}

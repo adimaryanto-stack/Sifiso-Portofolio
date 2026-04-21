@@ -53,9 +53,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <ProjectDetailHero project={project} />
 
       <div className="container mx-auto px-6 py-24">
@@ -129,7 +127,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         </div>
       </div>
 
-      <footer className="border-t border-border bg-surface/20 py-32 px-6">
+      <div className="border-t border-border bg-surface/20 py-32 px-6">
         <div className="container mx-auto text-center">
            <span className="text-secondary text-xs font-black uppercase tracking-[0.4em] mb-4 block">Up Next</span>
            <Link href="/work" className="group inline-block">
@@ -142,7 +140,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               </div>
            </Link>
         </div>
-      </footer>
-    </main>
+      </div>
+    </div>
+  );
+}
   );
 }

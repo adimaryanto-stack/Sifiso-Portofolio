@@ -3,17 +3,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 
-export function PageTransition({ children }: { children: React.ReactNode }) {
+export function PublicTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdmin = pathname?.startsWith("/admin");
-  
-  // Use a stable key for each major section to prevent unmounting the persistent layout shells
-  const transitionKey = isAdmin ? "admin-shell" : "public-shell";
 
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        key={transitionKey}
+        key={pathname}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}

@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Navbar } from "@/components/layout/navbar";
 import { motion } from "framer-motion";
-import { Check, ArrowRight, Zap, Target, Shield, Send, CheckCircle2 } from "lucide-react";
+import { Check, ArrowRight, Zap, Target, Shield, CheckCircle2 } from "lucide-react";
 import { Button } from "@sifiso/ui/components/button";
+import { sendInquiry } from "@/lib/actions/inquiries";
 
 const tiers = [
   {
@@ -33,8 +33,6 @@ const tiers = [
     button: "Contact for Enterprise"
   }
 ];
-
-import { sendInquiry } from "@/lib/actions/inquiries";
 
 export default function GetStartedPage() {
   const [selectedTier, setSelectedTier] = useState<string>("Custom / Individual");
@@ -75,9 +73,7 @@ export default function GetStartedPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <div className="container mx-auto px-6 pt-32 pb-24">
         {/* Header */}
         <motion.div
@@ -294,6 +290,6 @@ export default function GetStartedPage() {
            </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

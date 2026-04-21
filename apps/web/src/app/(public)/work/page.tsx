@@ -28,9 +28,7 @@ export default async function WorkPage() {
   const allWorks = await getPublishedProjects();
 
   return (
-    <div className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <main className="container mx-auto px-6 pt-32 pb-24">
         <WorkGalleryInteractive initialProjects={allWorks} />
       </main>

@@ -1,12 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { Navbar } from "@/components/layout/navbar";
 import { motion } from "framer-motion";
 import { Button } from "@sifiso/ui/components/button";
 import { Lock, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
-
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
@@ -42,14 +40,12 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white selection:bg-primary/30">
-      <Navbar />
-      
+    <div className="min-h-screen selection:bg-primary/30">
       <div className="container mx-auto px-6 pt-48 pb-24 flex items-center justify-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="w-full max-w-md"
+           initial={{ opacity: 0, scale: 0.95 }}
+           animate={{ opacity: 1, scale: 1 }}
+           className="w-full max-w-md"
         >
           <div className="text-center mb-12">
             <h1 className="text-4xl font-black italic tracking-tighter mb-4">
@@ -97,17 +93,17 @@ export default function LoginPage() {
                 </div>
               </div>
 
-              <Button 
+              <button 
                 type="submit" 
                 disabled={isLoading}
-                className="w-full h-16 rounded-2xl text-lg glow-red font-black uppercase tracking-[0.2em] mt-4"
+                className="w-full h-16 rounded-2xl text-lg bg-primary text-white glow-red font-black uppercase tracking-[0.2em] mt-4"
               >
                 {isLoading ? "Validating..." : (
-                  <>
+                  <span className="flex items-center justify-center">
                     Enter Dashboard <ArrowRight className="ml-2 w-5 h-5" />
-                  </>
+                  </span>
                 )}
-              </Button>
+              </button>
 
               <div className="pt-4 border-t border-white/5 text-center">
                  <button 
@@ -131,6 +127,6 @@ export default function LoginPage() {
 
       {/* Decorative pulse */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-primary/5 rounded-full blur-[120px] -z-10" />
-    </main>
+    </div>
   );
 }

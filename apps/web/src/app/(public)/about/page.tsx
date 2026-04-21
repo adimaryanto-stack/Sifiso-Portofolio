@@ -9,9 +9,7 @@ import { Button } from "@sifiso/ui/components/button";
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-black text-white">
-      <Navbar />
-      
+    <div className="min-h-screen">
       <div className="container mx-auto px-6 pt-32 pb-24">
         {/* Back Link */}
         <Link href="/" className="inline-flex items-center text-secondary hover:text-primary transition-colors mb-12 group">
