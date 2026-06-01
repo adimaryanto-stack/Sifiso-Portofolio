@@ -20,8 +20,6 @@ function createDb() {
   }
 
   console.log("💻 Using Local SQLite Database");
-  // Ensure we consistently point to the same file in the project root
-  // Handles running from project root or apps/web
   const dbPath = process.cwd().includes("apps") 
     ? path.resolve(process.cwd(), "../../sifiso-local.db") 
     : path.resolve(process.cwd(), "sifiso-local.db");
@@ -30,5 +28,9 @@ function createDb() {
   return drizzleSqlite(sqlite, { schema });
 }
 
-// Export as any to avoid Drizzle's dialect-specific union type errors in cross-platform usage
+// NOTE: `as any` is required here because Drizzle's SQLite and PostgreSQL
+// database types have incompatible select()/insert()/update() overloads.
+// A union type (BetterSQLite3Database | PostgresJsDatabase) causes TS2349
+// errors at every query call site. This is a known tradeoff of the hybrid
+// DB architecture. Runtime behavior is correct — the cast only affects types.
 export const db = createDb() as any;

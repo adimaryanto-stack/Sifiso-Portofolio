@@ -30,7 +30,7 @@ export function ContactForm() {
     };
 
     try {
-      const result = await sendInquiry(data as any);
+      const result = await sendInquiry(data);
       if (result.success) {
         setIsSuccess(true);
       } else {

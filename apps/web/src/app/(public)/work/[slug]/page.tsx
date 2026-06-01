@@ -10,7 +10,7 @@ import { projects, type Project } from "@/lib/db/schema";
 import { eq, and } from "drizzle-orm";
 import { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 async function getProject(slug: string) {
   console.log("🔍 Fetching project with slug:", slug);
@@ -72,10 +72,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             </div>
             
             {/* Gallery Section */}
-            {project.processGallery && (project.processGallery as any[]).length > 0 && (
+            {project.processGallery && (project.processGallery as string[]).length > 0 && (
                <div className="mt-16 space-y-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                     {(project.processGallery as any[]).map((imgUrl, idx) => (
+                     {(project.processGallery as string[]).map((imgUrl, idx) => (
                         <div key={idx} className="aspect-video rounded-3xl bg-surface-elevated border border-border overflow-hidden group">
                            <img 
                              src={imgUrl} 

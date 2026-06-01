@@ -18,6 +18,12 @@ import { db } from "@/lib/db";
 import { siteSettings } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 
+interface SeoData {
+  title: string;
+  description: string;
+  generator: string;
+}
+
 export async function generateMetadata(): Promise<Metadata> {
   let seoData = {
     title: "Sifiso — Modern Design & Development Portfolio",
@@ -28,7 +34,8 @@ export async function generateMetadata(): Promise<Metadata> {
   try {
     const results = await db.select().from(siteSettings).where(eq(siteSettings.key, "seo_metadata")).limit(1);
     if (results.length > 0) {
-      seoData = results[0].value as any;
+      const raw = results[0].value;
+      seoData = (typeof raw === 'string' ? JSON.parse(raw) : raw) as SeoData;
     }
   } catch (error) {
     console.error("Failed to fetch SEO settings for metadata", error);

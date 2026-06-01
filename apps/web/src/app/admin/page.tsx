@@ -49,8 +49,9 @@ export default async function AdminDashboard() {
         </div>
         
         <div className="bg-surface border border-border rounded-2xl p-6">
-          <h3 className="text-secondary text-sm font-medium mb-2">Page Views (Mkt)</h3>
-          <p className="text-4xl font-black text-foreground">1.2k</p>
+          <h3 className="text-secondary text-sm font-medium mb-2">Page Views</h3>
+          <p className="text-4xl font-black text-foreground/40">—</p>
+          <p className="text-xs text-secondary mt-2">Connect analytics to track</p>
         </div>
       </div>
 

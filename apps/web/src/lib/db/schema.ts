@@ -16,6 +16,8 @@ import { v4 as uuidv4 } from "uuid";
 const isPg = !!(process.env.POSTGRES_URL || process.env.DATABASE_URL);
 
 // Helper to switch between PG and SQLite
+// NOTE: `as any` is required — pgTable and sqliteTable have incompatible
+// column type constraints that prevent a clean union or intersection type.
 export const table = (isPg ? pgTable : sqliteTable) as any;
 
 // Helper for Text columns

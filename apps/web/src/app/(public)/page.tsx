@@ -7,13 +7,10 @@ import { ContactForm } from "@/components/sections/contact-form";
 import { db } from "@/lib/db";
 import { testimonials, services } from "@/lib/db/schema";
 import { desc } from "drizzle-orm";
-import { unstable_noStore as noStore } from 'next/cache';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export default async function Home() {
-  // Force this component to bypass any Vercel/Next.js caching mechanisms
-  noStore();
   
   // Explicitly pull fresh data from Neon
   const rawTestimonials = await db.select().from(testimonials).orderBy(desc(testimonials.createdAt)).limit(10);
@@ -46,10 +43,10 @@ export default async function Home() {
         <ProjectGallery />
  
         {/* Services Section */}
-        <ServicesGrid data={allServices as any} />
+        <ServicesGrid data={allServices} />
  
         {/* Testimonials */}
-        <TestimonialsCarousel data={allTestimonials as any} />
+        <TestimonialsCarousel data={allTestimonials} />
  
         {/* Contact form */}
         <ContactForm />
