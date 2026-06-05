@@ -10,7 +10,7 @@ const intlMiddleware = createMiddleware({
   defaultLocale: 'en'
 });
 
-export default async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Protect admin routes (accounting for locale prefixes like /en/admin)

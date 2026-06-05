@@ -13,7 +13,12 @@ import {
 import { relations, sql } from "drizzle-orm";
 import { v4 as uuidv4 } from "uuid";
 
-const isPg = !!(process.env.POSTGRES_URL || process.env.DATABASE_URL);
+const isPg = !!(
+  process.env.POSTGRES_URL ||
+  process.env.DATABASE_URL ||
+  process.env.VERCEL === "1" ||
+  process.env.NODE_ENV === "production"
+);
 
 // Helper to switch between PG and SQLite
 // NOTE: `as any` is required — pgTable and sqliteTable have incompatible
