@@ -41,7 +41,7 @@ Fitur-fitur advanced seperti analytics, dynamic OG images, dan email notificatio
 | Admin — Projects CRUD | P0 | Sprint 2 |
 | Admin — Testimonials CRUD | P0 | Sprint 2 |
 | Admin — Inquiries list | P0 | Sprint 2 |
-| Admin — Image upload (Supabase Storage) | P0 | Sprint 2 |
+| Admin — Image upload (Local Storage) | P0 | Sprint 2 |
 | Responsive design (mobile + desktop) | P0 | Sprint 2 |
 | SEO basics (meta tags, sitemap) | P1 | Sprint 2 |
 | Database seeding (sample data) | P0 | Sprint 1 |
@@ -262,7 +262,7 @@ POST   /api/upload                  → Upload image
 | State Management | React Server Components + Server Actions | No extra state library needed for CRUD |
 | Form Handling | React Hook Form + Zod | Type-safe validation |
 | Animation | Framer Motion | Best React animation library |
-| Image Upload | Supabase Storage + signed URLs | Integrated, free tier generous |
+| Image Upload | Local File System | Sederhana, gratis untuk development lokal |
 | Rich Text | Textarea (MVP) → TipTap (v1.1) | Keep it simple |
 | Data Fetching | Server Components (direct DB) + API Routes | Best practices Next.js 14 |
 | Caching | ISR with `revalidate: 3600` | Balance freshness vs performance |
@@ -296,7 +296,7 @@ POST   /api/upload                  → Upload image
 
 | Risk | Mitigation |
 |------|------------|
-| Supabase connection issues | Test early, have connection fallback |
+| Neon/Local DB connection issues | Test early, have connection fallback |
 | Better Auth v2 auth flow bugs | Keep auth simple (email/password only) |
 | Monorepo build complexity | Follow official Turborepo starter template |
 | Image optimization | Use Next.js `<Image>` component everywhere |

@@ -47,7 +47,7 @@
 | Next.js Server Actions | 16 | Core logic & form handling |
 | Drizzle ORM | Latest | Type-safe database queries |
 | Better Auth | v2 | Authentication admin |
-| Supabase Storage | Latest | File/image uploads |
+| Local Storage | N/A | File/image uploads (Local MVP) |
 | Resend | Latest | Email service untuk contact form |
 
 ### 3.3 Monorepo & Tooling
@@ -64,7 +64,7 @@
 | Layanan | Fungsi |
 |---------|--------|
 | Vercel | Hosting & deployment |
-| Supabase | Database (PostgreSQL) + Storage |
+| Neon | Database (PostgreSQL) |
 | GitHub | Version control |
 
 ---
@@ -453,7 +453,7 @@ erDiagram
 #### 6.2.3 Projects Management
 - **List View:** Table dengan thumbnail, title, category, status, date
 - **Create/Edit:** Rich form — title, slug (auto-generate), description, brief, images upload (drag & drop), category, tags, process gallery, results metrics
-- **Image Upload:** Multi-image upload ke Supabase Storage
+- **Image Upload:** Multi-image upload ke local file system (`public/uploads`)
 - **Publish/Unpublish:** Toggle switch
 - **Reorder:** Drag-and-drop sort order
 - **Delete:** Soft delete dengan confirmation modal
@@ -513,7 +513,7 @@ erDiagram
 | `GET/POST` | `/api/admin/pricing` | CRUD pricing |
 | `GET` | `/api/admin/inquiries` | List all inquiries |
 | `PUT` | `/api/admin/inquiries/[id]` | Update inquiry status |
-| `POST` | `/api/upload` | Upload images to Supabase Storage |
+| `POST` | `/api/upload` | Upload images to local storage |
 | `PUT` | `/api/admin/settings` | Update site settings |
 
 ---
