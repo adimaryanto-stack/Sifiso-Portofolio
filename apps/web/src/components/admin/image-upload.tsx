@@ -32,32 +32,26 @@ export function ImageUpload({ onUploadSuccess, defaultImage, bucketName = "portf
     setError(null);
 
     try {
-      if (!supabaseClient) {
-        throw new Error("Image upload is not configured. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY.");
+      // Create FormData to send file
+      const formData = new FormData();
+      formData.append("file", file);
+
+      // Upload the file to local API endpoint
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.error || "Failed to upload file to local storage");
       }
 
-      // 1. Create a unique file name
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `uploads/${fileName}`;
-
-      // 2. Upload the file to Supabase Storage
-      const { error: uploadError, data } = await supabaseClient.storage
-        .from(bucketName)
-        .upload(filePath, file);
-
-      if (uploadError) {
-        throw uploadError;
-      }
-
-      // 3. Get the public URL
-      const { data: { publicUrl } } = supabaseClient!.storage
-        .from(bucketName)
-        .getPublicUrl(filePath);
-
-      // 4. Update parent state
-      setPreview(publicUrl);
-      onUploadSuccess(publicUrl);
+      const data = await response.json();
+      
+      // Update parent state
+      setPreview(data.url);
+      onUploadSuccess(data.url);
       
     } catch (err: any) {
       console.error("Upload error:", err);
