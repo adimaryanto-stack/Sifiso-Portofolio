@@ -9,12 +9,13 @@ import { ArrowLeft, Calendar } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage(props: { params: Promise<{ slug: string }> }) {
+  const { slug } = await props.params;
   let post = null;
   try {
     const results = await db.select()
       .from(blogPosts)
-      .where(eq(blogPosts.slug, params.slug))
+      .where(eq(blogPosts.slug, slug))
       .limit(1);
     
     if (results.length > 0) {

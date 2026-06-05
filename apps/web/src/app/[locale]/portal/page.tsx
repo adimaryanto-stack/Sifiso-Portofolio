@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export default async function ClientPortalPage() {
   const session = await auth.api.getSession({
-    headers: headers()
+    headers: await headers()
   });
 
   if (!session) {
@@ -62,7 +62,7 @@ export default async function ClientPortalPage() {
                 </div>
               ) : (
                 <div className="space-y-6">
-                  {milestones.map((m, i) => (
+                  {milestones.map((m: any, i: number) => (
                     <div key={m.id} className="flex items-start space-x-4">
                       <div className="mt-1">
                         {m.status === 'completed' ? (
@@ -97,7 +97,7 @@ export default async function ClientPortalPage() {
                 <p className="text-sm text-secondary text-center py-4">No invoices due.</p>
               ) : (
                 <div className="space-y-4">
-                  {clientInvoices.map((inv) => (
+                  {clientInvoices.map((inv: any) => (
                     <div key={inv.id} className="p-4 rounded-xl bg-surface-elevated border border-border flex flex-col space-y-3">
                       <div className="flex justify-between items-center">
                         <span className="font-bold">{inv.invoiceNumber}</span>

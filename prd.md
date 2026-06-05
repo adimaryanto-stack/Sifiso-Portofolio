@@ -3,7 +3,7 @@
 
 **Version:** 2.0 (v2.0 Completion)  
 **Date:** 05 June 2026  
-**Author:** Antigravity AI  
+**Author:** Adimaryanto Stack  
 **Status:** v2.0 (Month 2) Completed
 
 ---
@@ -725,7 +725,7 @@ Fitur-fitur advanced seperti analytics, dynamic OG images, dan email notificatio
 | Database seeding (sample data) | P0 | Sprint 1 |
 | Vercel deployment | P1 | Sprint 2 |
 
-#### ❌ OUT OF SCOPE (Post-MVP)
+#### ✅ PREVIOUSLY OUT OF SCOPE (Now Delivered in v1.1 & v2.0)
 
 | Feature | Reason | Target |
 |---------|--------|--------|

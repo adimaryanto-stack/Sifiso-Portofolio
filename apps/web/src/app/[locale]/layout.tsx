@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 import { PageTransition } from "@/components/shared/page-transition";
 import { StructuredData } from "@/components/shared/structured-data";
 import { NextIntlClientProvider } from 'next-intl';
@@ -37,7 +37,10 @@ export async function generateMetadata(): Promise<Metadata> {
     const results = await db.select().from(siteSettings).where(eq(siteSettings.key, "seo_metadata")).limit(1);
     if (results.length > 0) {
       const raw = results[0].value;
-      seoData = (typeof raw === 'string' ? JSON.parse(raw) : raw) as SeoData;
+      const parsed = (typeof raw === 'string' ? JSON.parse(raw) : raw) as Partial<SeoData>;
+      if (parsed?.title) seoData.title = parsed.title;
+      if (parsed?.description) seoData.description = parsed.description;
+      if (parsed?.generator) seoData.generator = parsed.generator;
     }
   } catch (error) {
     console.error("Failed to fetch SEO settings for metadata", error);
@@ -84,13 +87,12 @@ export async function generateMetadata(): Promise<Metadata> {
 
 import { AnalyticsTracker } from "@/components/analytics-tracker";
 
-export default async function RootLayout({
-  children,
-  params: { locale }
-}: Readonly<{
+export default async function RootLayout(props: {
   children: React.ReactNode;
-  params: { locale: string };
-}>) {
+  params: Promise<{ locale: string }>;
+}) {
+  const { children } = props;
+  const { locale } = await props.params;
   const messages = await getMessages();
 
   return (

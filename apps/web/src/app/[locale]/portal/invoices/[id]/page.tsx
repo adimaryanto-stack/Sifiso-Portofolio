@@ -7,10 +7,11 @@ import { format } from "date-fns";
 
 export const dynamic = "force-dynamic";
 
-export default async function InvoicePrintPage({ params }: { params: { id: string } }) {
+export default async function InvoicePrintPage(props: { params: Promise<{ id: string }> }) {
+  const { id } = await props.params;
   const invoiceResults = await db.select()
     .from(invoices)
-    .where(eq(invoices.id, params.id))
+    .where(eq(invoices.id, id))
     .limit(1);
 
   if (invoiceResults.length === 0) notFound();

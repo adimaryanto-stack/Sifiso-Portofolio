@@ -44,11 +44,28 @@ const tsCol = (name: string) => {
   return sqInteger(name, { mode: "timestamp" });
 };
 
+import { customType } from "drizzle-orm/pg-core";
+
+const pgJsonText = customType<{ data: any; driverData: string }>({
+  dataType() {
+    return 'text';
+  },
+  toDriver(value: any): string {
+    return JSON.stringify(value);
+  },
+  fromDriver(value: string): any {
+    if (value === "[object Object]") return {};
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
+  },
+});
+
 // Helper for JSON columns
 const jsonCol = (name: string) => {
-  // In PG we use text as a fallback if not using jsonb, or just text if it's simpler
-  // User had mode: json in SQLite which stores as text anyway
-  if (isPg) return pgText(name); 
+  if (isPg) return pgJsonText(name); 
   return sqText(name, { mode: "json" });
 };
 

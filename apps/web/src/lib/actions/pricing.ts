@@ -26,7 +26,7 @@ export async function createPricingPackage(formData: FormData) {
       return { success: false, error: "Name and price are required" };
     }
 
-    let features = [];
+    let features: string[] = [];
     if (featuresStr) {
       features = featuresStr.split("\n").map(f => f.trim()).filter(f => f);
     }
@@ -68,7 +68,7 @@ export async function updatePricingPackage(id: string, formData: FormData) {
       return { success: false, error: "Name and price are required" };
     }
 
-    let features = [];
+    let features: string[] = [];
     if (featuresStr) {
       features = featuresStr.split("\n").map(f => f.trim()).filter(f => f);
     }

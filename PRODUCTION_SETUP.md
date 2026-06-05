@@ -58,4 +58,4 @@ To sync your production schema with the Vercel Postgres database:
 - **Konektivitas Database**: Jika server Vercel gagal terhubung, pastikan `POSTGRES_URL` sudah mencakup parameter `?sslmode=require` jika diperlukan oleh provider database Anda.
 
 ---
-Crafted with precision by **Sifiso & Antigravity**.
+Crafted with precision by **Adimaryanto Stack**.

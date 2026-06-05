@@ -97,4 +97,4 @@ The project is built with SEO best practices:
 
 ---
 
-Crafted with precision by **Sifiso & Antigravity**.
+Crafted with precision by **Adimaryanto Stack**.

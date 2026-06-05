@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Get IP address (useful for basic deduplication/analytics if needed later)
-    let ipAddress = req.ip || req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
+    let ipAddress = req.headers.get("x-forwarded-for") || req.headers.get("x-real-ip") || "unknown";
     if (ipAddress.includes(",")) {
       ipAddress = ipAddress.split(",")[0].trim();
     }

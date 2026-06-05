@@ -13,8 +13,11 @@ const intlMiddleware = createMiddleware({
 export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Protect /admin routes
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/login")) {
+  // Protect admin routes (accounting for locale prefixes like /en/admin)
+  const isAdminRoute = pathname.includes("/admin") || pathname === "/admin";
+  const isLoginRoute = pathname.includes("/login") || pathname === "/login";
+
+  if (isAdminRoute && !isLoginRoute) {
     const { data: session } = await betterFetch<Session>(
       "/api/auth/get-session",
       {
@@ -30,8 +33,8 @@ export default async function proxy(request: NextRequest) {
     }
   }
 
-  // Handle i18n for public routes (skip API, Admin, and Login)
-  if (!pathname.startsWith("/api") && !pathname.startsWith("/admin") && !pathname.startsWith("/login")) {
+  // Handle i18n for public routes (skip API)
+  if (!pathname.startsWith("/api")) {
     return intlMiddleware(request);
   }
 

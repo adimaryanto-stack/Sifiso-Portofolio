@@ -1,11 +1,6 @@
 import { Hero } from "@/components/sections/hero";
-import { AboutPreview } from "@/components/sections/about-preview";
-import { ServicesGrid } from "@/components/sections/services-grid";
-import { ProjectGallery } from "@/components/sections/project-gallery";
-import { ServicesOverview } from "@/components/sections/services-overview";
-import { ContactForm } from "@/components/sections/contact-form";
 import { getTranslations } from "next-intl/server";
-import { Button } from "@/components/ui/button";
+import { Button } from "@sifiso/ui/components/button";
 import { db } from "@/lib/db";
 import { testimonials, services } from "@/lib/db/schema";
 import { desc, asc, eq } from "drizzle-orm";
@@ -44,7 +39,7 @@ export default async function Home() {
           {t("description")}
         </p>
         <div className="pt-4">
-          <Button size="lg" className="px-8 py-6 text-lg rounded-2xl shadow-2xl shadow-primary/20 glow-red">
+          <Button className="px-8 py-6 text-lg rounded-2xl shadow-2xl shadow-primary/20 glow-red">
             {t("hero_cta")}
           </Button>
         </div>
