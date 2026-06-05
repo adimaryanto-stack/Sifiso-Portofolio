@@ -1,0 +1,18 @@
+{
+  "Index": {
+    "title": "Modern Design & Development Portfolio",
+    "description": "Multidisciplinary designer specializing in high-performance digital experiences.",
+    "hero_cta": "View Work",
+    "services_title": "Services",
+    "work_title": "Selected Work"
+  },
+  "Navigation": {
+    "home": "Home",
+    "work": "Work",
+    "services": "Services",
+    "blog": "Blog",
+    "about": "About",
+    "contact": "Contact",
+    "get_in_touch": "Get in Touch"
+  }
+}

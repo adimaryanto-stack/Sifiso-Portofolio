@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Button } from "@sifiso/ui/components/button";
 import { cn } from "@sifiso/ui/lib/utils";
 import { Menu, X } from "lucide-react";
+import { LanguageSwitcher } from "./language-switcher";
 
 const navItems = [
   { name: "Home", href: "/#home" },
   { name: "Work", href: "/#work" },
   { name: "Services", href: "/#services" },
+  { name: "Blog", href: "/blog" },
   { name: "About", href: "/#about" },
   { name: "Contact", href: "/#contact" },
 ];
@@ -51,6 +53,7 @@ export function Navbar() {
               {item.name}
             </Link>
           ))}
+          <LanguageSwitcher />
           <Link href="/get-started">
             <Button className="glow-red">Get in Touch</Button>
           </Link>
@@ -78,6 +81,7 @@ export function Navbar() {
               {item.name}
             </Link>
           ))}
+          <LanguageSwitcher />
           <Link href="/get-started" className="w-full" onClick={() => setMobileMenuOpen(false)}>
             <Button className="w-full glow-red">Get in Touch</Button>
           </Link>

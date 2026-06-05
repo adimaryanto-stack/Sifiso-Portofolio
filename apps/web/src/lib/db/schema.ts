@@ -284,8 +284,140 @@ export const loginLogs = table("login_logs", {
   timestamp: tsCol("timestamp").default(nowHelper()).notNull(),
 });
 
+export const pageViews = table("page_views", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  path: textCol("path").notNull(),
+  userAgent: textCol("user_agent"),
+  ipAddress: textCol("ip_address"),
+  timestamp: tsCol("timestamp").default(nowHelper()).notNull(),
+});
+
+// v2.0 Blog Schema
+export const blogCategories = table("blog_categories", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  name: textCol("name").notNull().unique(),
+  slug: textCol("slug").notNull().unique(),
+  description: textCol("description"),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+});
+
+export const blogPosts = table("blog_posts", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  title: textCol("title").notNull(),
+  slug: textCol("slug").notNull().unique(),
+  excerpt: textCol("excerpt"),
+  content: textCol("content").notNull(), // Markdown or HTML
+  coverImage: textCol("cover_image"),
+  authorId: textCol("author_id").references(() => user.id, { onDelete: "set null" }),
+  isPublished: boolCol("is_published").default(false),
+  publishedAt: tsCol("published_at"),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+  updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
+});
+
+export const postCategories = table("post_categories", {
+  postId: textCol("post_id")
+    .notNull()
+    .references(() => blogPosts.id, { onDelete: "cascade" }),
+  categoryId: textCol("category_id")
+    .notNull()
+    .references(() => blogCategories.id, { onDelete: "cascade" }),
+});
+
+export const blogPostsRelations = relations(blogPosts, ({ many, one }) => ({
+  categories: many(postCategories),
+  author: one(user, {
+    fields: [blogPosts.authorId],
+    references: [user.id],
+  }),
+}));
+
+export const postCategoriesRelations = relations(postCategories, ({ one }) => ({
+  post: one(blogPosts, {
+    fields: [postCategories.postId],
+    references: [blogPosts.id],
+  }),
+  category: one(blogCategories, {
+    fields: [postCategories.categoryId],
+    references: [blogCategories.id],
+  }),
+}));
+
 export type Project = typeof projects.$inferSelect;
-export type NewProject = typeof projects.$inferInsert;
 export type Inquiry = typeof inquiries.$inferSelect;
+export type NewInquiry = typeof inquiries.$inferInsert;
 export type Testimonial = typeof testimonials.$inferSelect;
-export type LoginLog = typeof loginLogs.$inferSelect;
+export type NewTestimonial = typeof testimonials.$inferInsert;
+
+// v2.0 Client Portal Schema
+export const clients = table("clients", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  userId: textCol("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
+  companyName: textCol("company_name"),
+  phoneNumber: textCol("phone_number"),
+  status: textCol("status").default("active"),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+});
+
+export const projectMilestones = table("project_milestones", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  projectId: textCol("project_id").notNull().references(() => projects.id, { onDelete: "cascade" }),
+  title: textCol("title").notNull(),
+  description: textCol("description"),
+  status: textCol("status").default("pending"), // pending, in_progress, completed, approved
+  dueDate: tsCol("due_date"),
+  completedAt: tsCol("completed_at"),
+  sortOrder: intCol("sort_order").default(0),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+});
+
+export const projectApprovals = table("project_approvals", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  milestoneId: textCol("milestone_id").notNull().references(() => projectMilestones.id, { onDelete: "cascade" }),
+  clientId: textCol("client_id").notNull().references(() => clients.id, { onDelete: "cascade" }),
+  status: textCol("status").default("pending"), // pending, approved, rejected
+  feedback: textCol("feedback"),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+});
+
+export const clientRelations = relations(clients, ({ one, many }) => ({
+  user: one(user, {
+    fields: [clients.userId],
+    references: [user.id],
+  }),
+  approvals: many(projectApprovals),
+}));
+
+export const projectMilestoneRelations = relations(projectMilestones, ({ one, many }) => ({
+  project: one(projects, {
+    fields: [projectMilestones.projectId],
+    references: [projects.id],
+  }),
+  approvals: many(projectApprovals),
+}));
+
+export const invoices = table("invoices", {
+  id: textCol("id").primaryKey().$defaultFn(() => uuidv4()),
+  clientId: textCol("client_id").notNull().references(() => clients.id, { onDelete: "cascade" }),
+  projectId: textCol("project_id").references(() => projects.id, { onDelete: "set null" }),
+  invoiceNumber: textCol("invoice_number").notNull().unique(),
+  amount: textCol("amount").notNull(),
+  currency: textCol("currency").default("USD"),
+  status: textCol("status").default("unpaid"), // unpaid, paid, overdue, cancelled
+  dueDate: tsCol("due_date"),
+  paidAt: tsCol("paid_at"),
+  pdfUrl: textCol("pdf_url"),
+  paymentLink: textCol("payment_link"),
+  createdAt: tsCol("created_at").default(nowHelper()).notNull(),
+});
+
+export const invoiceRelations = relations(invoices, ({ one }) => ({
+  client: one(clients, {
+    fields: [invoices.clientId],
+    references: [clients.id],
+  }),
+  project: one(projects, {
+    fields: [invoices.projectId],
+    references: [projects.id],
+  }),
+}));

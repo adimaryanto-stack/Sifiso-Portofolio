@@ -307,22 +307,22 @@ POST   /api/upload                  → Upload image
 ## 10. Post-MVP Roadmap
 
 ### v1.1 (Week 3)
-- [ ] Creative Process animated section
-- [ ] Quotes section from CMS
-- [ ] Pricing page from CMS
-- [ ] Admin Services CRUD
-- [ ] Admin Site Settings
-- [ ] Email notifications (Resend)
-- [ ] Drag-and-drop reorder
+- [x] Creative Process animated section
+- [x] Quotes section from CMS
+- [x] Pricing page from CMS
+- [x] Admin Services CRUD
+- [x] Admin Site Settings
+- [x] Email notifications (Resend)
+- [x] Drag-and-drop reorder (Using simple Up/Down arrow strategy)
 
 ### v1.2 (Week 4)
-- [ ] Dynamic OG images (Satori)
-- [ ] Analytics dashboard (page views, inquiry trends)
-- [ ] Image optimization pipeline
-- [ ] Performance review & optimization
+- [x] Dynamic OG images (Satori)
+- [x] Analytics dashboard (page views, inquiry trends)
+- [x] Image optimization pipeline
+- [x] Performance review & optimization
 
 ### v2.0 (Month 2)
-- [ ] Blog section
-- [ ] Multi-language support (i18n)
-- [ ] Client portal (project tracking)
-- [ ] Invoice/proposal integration
+- [x] Blog section
+- [x] Multi-language support (i18n)
+- [x] Client portal (project tracking)
+- [x] Invoice/proposal integration

@@ -13,7 +13,12 @@ import {
   Settings,
   LogOut,
   ShieldAlert,
-  ExternalLink
+  ExternalLink,
+  Layers,
+  DollarSign,
+  MessageSquareQuote,
+  GitBranch,
+  FileText
 } from "lucide-react";
 
 export function AdminSidebar() {
@@ -31,7 +36,12 @@ export function AdminSidebar() {
   const navigation = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Projects", href: "/admin/projects", icon: FolderKanban },
+    { name: "Services", href: "/admin/services", icon: Layers },
+    { name: "Pricing", href: "/admin/pricing", icon: DollarSign },
+    { name: "Creative Process", href: "/admin/creative-process", icon: GitBranch },
+    { name: "Quotes", href: "/admin/quotes", icon: MessageSquareQuote },
     { name: "Inquiries", href: "/admin/inquiries", icon: Mail },
+    { name: "Blog", href: "/admin/blog", icon: FileText },
     { name: "Testimonials", href: "/admin/testimonials", icon: Quote },
     { name: "Security Logs", href: "/admin/security", icon: ShieldAlert },
     { name: "Image Gallery", href: "/admin/gallery", icon: ImageIcon },

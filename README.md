@@ -1,4 +1,4 @@
-# Sifiso — High-Performance Portfolio v1.0
+# Sifiso — High-Performance Portfolio v2.0
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fadimaryanto-stack%2FSifiso-Portofolio-&env=POSTGRES_URL,BETTER_AUTH_SECRET,BETTER_AUTH_URL,NEXT_PUBLIC_SITE_URL&root-directory=apps/web)
 
@@ -18,7 +18,10 @@ Sifiso is a premium, high-fidelity multidisciplinary portfolio built for designe
 ## ✨ Key Features
 
 - **Dynamic Work Gallery:** Filterable portfolio grid with interactive hover effects and awaited params compatibility.
-- **Client Management:** Fully functional admin dashboard to manage projects and testimonials with image previews.
+- **Client Management & Portal:** Fully functional admin dashboard to manage projects, testimonials, and a secure **Client Portal** where clients can track project milestones.
+- **Invoicing System:** Generate invoices from the dashboard and provide printable PDF versions for clients.
+- **Blog System:** Built-in Markdown CMS to manage and publish articles.
+- **Multi-Language (i18n):** Native support for multiple languages (English and Indonesian) via `next-intl`.
 - **Dynamic SEO Dashboard:** Integrated management for Meta Titles, Descriptions, and Keywords that update the site in real-time.
 - **Real-time Inquiry System:** Functional contact form connected to a backend inbox for lead management.
 - **Hybrid DB Logic:** Seamlessly switches between local SQLite and production PostgreSQL based on environment.

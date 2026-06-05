@@ -1,10 +1,10 @@
 # 📋 Product Requirements Document (PRD)
 # Sifiso — Dynamic Portfolio Website
 
-**Version:** 1.0 (Final)  
-**Date:** 18 April 2026  
+**Version:** 2.0 (v2.0 Completion)  
+**Date:** 05 June 2026  
 **Author:** Antigravity AI  
-**Status:** Completed & Optimized
+**Status:** v2.0 (Month 2) Completed
 
 ---
 
@@ -17,6 +17,8 @@
 - Memberikan kesan **premium** dengan "Bright Mode" Admin yang bersih dan Landing Page yang futuristik.
 - Menyediakan **Offline-First Development** menggunakan database lokal tanpa ketergantungan internet.
 - Mengoptimalkan **SEO** melalui dashboard meta-editor yang terintegrasi (Dynamic SEO).
+- **[v2.0]** Mendukung lokalisasi i18n (Multi-bahasa) untuk jangkauan global.
+- **[v2.0]** Menawarkan sistem Portal Klien, pelacakan proyek, dan manajemen *invoicing* terintegrasi.
 
 ---
 
@@ -115,6 +117,8 @@ sifiso/
 │       │   │   │   ├── creative-process.tsx
 │       │   │   │   ├── contact-form.tsx
 │       │   │   │   └── quotes-section.tsx
+│       │   │   ├── portal/           # [v2.0] Client Portal
+│       │   │   │   └── invoices/     # Printable invoices
 │       │   │   ├── admin/            # Admin components
 │       │   │   └── shared/           # Shared app components
 │       │   │       ├── navbar.tsx
@@ -481,6 +485,15 @@ erDiagram
 - **Social:** Social media links
 - **Quotes:** Manage inspiration quotes
 - **Creative Process:** Manage process steps
+
+#### 6.2.9 [v2.0] Blog Management
+- **CRUD:** Artikel dengan format Markdown/HTML, status *draft/published*.
+- **Kategori:** Manajemen kategori artikel blog.
+
+#### 6.2.10 [v2.0] Client Portal & Invoicing
+- **Klien:** Manajemen akses klien untuk melihat progress proyek.
+- **Milestone:** Penanda status penyelesaian tahap proyek (Pending, In Progress, Completed).
+- **Invoice:** Pembuatan tagihan proyek dengan antarmuka cetak mandiri untuk klien.
 
 ---
 

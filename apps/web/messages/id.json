@@ -1,0 +1,18 @@
+{
+  "Index": {
+    "title": "Portofolio Desain & Pengembangan Modern",
+    "description": "Desainer multidisiplin dengan spesialisasi pengalaman digital performa tinggi.",
+    "hero_cta": "Lihat Karya",
+    "services_title": "Layanan",
+    "work_title": "Karya Pilihan"
+  },
+  "Navigation": {
+    "home": "Beranda",
+    "work": "Karya",
+    "services": "Layanan",
+    "blog": "Blog",
+    "about": "Tentang",
+    "contact": "Kontak",
+    "get_in_touch": "Hubungi Kami"
+  }
+}

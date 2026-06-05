@@ -35,6 +35,10 @@ const fallbackProjects = [
   }
 ];
 
+import Image from "next/image";
+
+// ... fallbackProjects remains the same ...
+
 export async function ProjectGallery() {
   // Fetch projects from DB
   let fetchedProjects: any[] = [];
@@ -65,35 +69,40 @@ export async function ProjectGallery() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {displayProjects.map((project, index) => (
-            <Link 
-              key={project.id} 
-              href={`/work/${project.slug}`}
-              className={`group relative flex flex-col ${index % 2 !== 0 ? 'md:mt-24' : ''}`}
-            >
-              <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-surface-elevated border border-border">
-                {/* Image Placeholder */}
-                <div 
-                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                   style={{ backgroundImage: `url(${project.imageUrl || project.thumbnailUrl || fallbackProjects[0].imageUrl})` }}
-                />
-                
-                {/* Overlay highlight */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
-                  <span className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-sm font-bold shadow-xl shadow-primary/20 backdrop-blur-md">
-                    View Project
-                  </span>
+          {displayProjects.map((project, index) => {
+            const imgSrc = project.imageUrl || project.thumbnailUrl || fallbackProjects[0].imageUrl;
+            return (
+              <Link 
+                key={project.id} 
+                href={`/work/${project.slug}`}
+                className={`group relative flex flex-col ${index % 2 !== 0 ? 'md:mt-24' : ''}`}
+              >
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-surface-elevated border border-border">
+                  <Image
+                    src={imgSrc}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  />
+                  
+                  {/* Overlay highlight */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                    <span className="bg-primary text-primary-foreground px-6 py-3 rounded-full text-sm font-bold shadow-xl shadow-primary/20 backdrop-blur-md">
+                      View Project
+                    </span>
+                  </div>
                 </div>
-              </div>
               
               <div className="mt-6 flex flex-col space-y-2">
                 <span className="text-primary text-xs font-bold uppercase tracking-widest">{project.category || 'Digital Experience'}</span>
                 <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">{project.title}</h3>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

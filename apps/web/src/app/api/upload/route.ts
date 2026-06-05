@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { existsSync } from "fs";
+import sharp from "sharp";
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,9 +18,9 @@ export async function POST(request: NextRequest) {
 
     const buffer = Buffer.from(await file.arrayBuffer());
     
-    // Generate unique filename
+    // Generate unique filename, force webp
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    const filename = file.name.replace(/\.[^/.]+$/, "") + "-" + uniqueSuffix + path.extname(file.name);
+    const filename = file.name.replace(/\.[^/.]+$/, "") + "-" + uniqueSuffix + ".webp";
     
     // Create uploads directory if it doesn't exist
     const uploadDir = path.join(process.cwd(), "public/uploads");
@@ -27,20 +28,30 @@ export async function POST(request: NextRequest) {
       await mkdir(uploadDir, { recursive: true });
     }
 
-    const filePath = path.join(uploadDir, filename);
+    const filepath = path.join(uploadDir, filename);
 
-    // Save file
-    await writeFile(filePath, buffer);
+    // Optimize image with Sharp
+    const optimizedBuffer = await sharp(buffer)
+      .resize({
+        width: 1920, // Max width 1920px
+        withoutEnlargement: true,
+      })
+      .webp({ quality: 80 }) // Convert to WebP with 80% quality
+      .toBuffer();
 
-    // Return the public URL path
+    // Write optimized buffer to disk
+    await writeFile(filepath, optimizedBuffer);
+
+    // Return the public URL
     return NextResponse.json({ 
       success: true, 
       url: `/uploads/${filename}` 
     });
-  } catch (error) {
+    
+  } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json(
-      { error: "Failed to upload file." },
+      { error: error.message || "Failed to upload file." },
       { status: 500 }
     );
   }

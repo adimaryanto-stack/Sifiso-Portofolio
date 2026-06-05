@@ -3,6 +3,8 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { PageTransition } from "@/components/shared/page-transition";
 import { StructuredData } from "@/components/shared/structured-data";
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -59,7 +61,7 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: "Sifiso Portfolio",
       images: [
         {
-          url: "/og-image.jpg",
+          url: `/api/og?title=${encodeURIComponent(seoData.title.split("—")[0].trim())}&subtitle=${encodeURIComponent(seoData.description)}`,
           width: 1200,
           height: 630,
           alt: seoData.title,
@@ -70,7 +72,7 @@ export async function generateMetadata(): Promise<Metadata> {
       card: "summary_large_image",
       title: seoData.title,
       description: seoData.description,
-      images: ["/og-image.jpg"],
+      images: [`/api/og?title=${encodeURIComponent(seoData.title.split("—")[0].trim())}&subtitle=${encodeURIComponent(seoData.description)}`],
       creator: "@sifiso",
     },
     robots: {
@@ -80,22 +82,31 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+import { AnalyticsTracker } from "@/components/analytics-tracker";
+
+export default async function RootLayout({
   children,
+  params: { locale }
 }: Readonly<{
   children: React.ReactNode;
+  params: { locale: string };
 }>) {
+  const messages = await getMessages();
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${inter.variable} ${playfair.variable} h-full antialiased dark`}
       style={{ colorScheme: "dark" }}
     >
       <body className="min-h-full bg-background text-foreground selection:bg-primary/30 noise-overlay">
-        <StructuredData />
-        <PageTransition>
-          {children}
-        </PageTransition>
+        <NextIntlClientProvider messages={messages}>
+          <StructuredData />
+          <AnalyticsTracker />
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
