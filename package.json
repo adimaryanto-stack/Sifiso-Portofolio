@@ -7,6 +7,9 @@
     "apps/*",
     "packages/*"
   ],
+  "overrides": {
+    "kysely": "0.28.0"
+  },
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
