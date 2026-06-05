@@ -105,10 +105,17 @@ export function WorkGalleryInteractive({ initialProjects }: { initialProjects: P
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   {/* Status Tag */}
-                  <div className="absolute top-8 left-8 px-4 py-2 rounded-full text-[9px] font-black tracking-[0.2em] uppercase flex items-center shadow-2xl backdrop-blur-md bg-black/60 border border-white/10">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 shadow-[0_0_8px_rgba(255,0,0,0.8)]" />
-                    Live Project
-                  </div>
+                  {project.projectStatus === "live" ? (
+                    <div className="absolute top-8 left-8 px-4 py-2 rounded-full text-[9px] font-black tracking-[0.2em] uppercase flex items-center shadow-2xl backdrop-blur-md bg-black/60 border border-primary/20 text-white">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary mr-2 animate-pulse shadow-[0_0_8px_rgba(255,0,0,0.8)]" />
+                      Live Project
+                    </div>
+                  ) : (
+                    <div className="absolute top-8 left-8 px-4 py-2 rounded-full text-[9px] font-black tracking-[0.2em] uppercase flex items-center shadow-2xl backdrop-blur-md bg-black/60 border border-white/10 text-muted-foreground">
+                      <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 mr-2" />
+                      Offline Project
+                    </div>
+                  )}
 
                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-8 group-hover:translate-y-0 text-white">
                     <div className="flex flex-col items-center">

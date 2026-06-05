@@ -31,6 +31,7 @@ interface GalleryImage {
   projectId: string;
   projectTitle: string | null;
   projectSlug: string | null;
+  isReadOnly?: boolean;
 }
 
 interface ProjectOption {
@@ -177,6 +178,7 @@ export function GalleryGrid({ initialImages, projects }: GalleryGridProps) {
               <ImageUpload
                 onUploadSuccess={(url) => setUploadedUrl(url)}
                 defaultImage={uploadedUrl || undefined}
+                hideGalleryOption={true}
               />
             </div>
 
@@ -307,7 +309,7 @@ export function GalleryGrid({ initialImages, projects }: GalleryGridProps) {
                 />
               </div>
 
-              {/* Overlay actions */}
+               {/* Overlay actions */}
               <div className="absolute top-2 right-2 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <button
                   onClick={() => setLightboxImage(image.imageUrl)}
@@ -316,28 +318,32 @@ export function GalleryGrid({ initialImages, projects }: GalleryGridProps) {
                 >
                   <Eye size={14} />
                 </button>
-                <button
-                  onClick={() => {
-                    setEditingCaption(image.id);
-                    setCaptionValue(image.caption || "");
-                  }}
-                  className="p-2 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors backdrop-blur-sm"
-                  title="Edit caption"
-                >
-                  <Pencil size={14} />
-                </button>
-                <button
-                  onClick={() => handleDelete(image.id)}
-                  disabled={deletingId === image.id}
-                  className="p-2 rounded-lg bg-black/60 text-white hover:bg-red-600 transition-colors backdrop-blur-sm disabled:opacity-50"
-                  title="Delete"
-                >
-                  {deletingId === image.id ? (
-                    <Loader2 size={14} className="animate-spin" />
-                  ) : (
-                    <Trash2 size={14} />
-                  )}
-                </button>
+                {!image.isReadOnly && (
+                  <>
+                    <button
+                      onClick={() => {
+                        setEditingCaption(image.id);
+                        setCaptionValue(image.caption || "");
+                      }}
+                      className="p-2 rounded-lg bg-black/60 text-white hover:bg-black/80 transition-colors backdrop-blur-sm"
+                      title="Edit caption"
+                    >
+                      <Pencil size={14} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(image.id)}
+                      disabled={deletingId === image.id}
+                      className="p-2 rounded-lg bg-black/60 text-white hover:bg-red-600 transition-colors backdrop-blur-sm disabled:opacity-50"
+                      title="Delete"
+                    >
+                      {deletingId === image.id ? (
+                        <Loader2 size={14} className="animate-spin" />
+                      ) : (
+                        <Trash2 size={14} />
+                      )}
+                    </button>
+                  </>
+                )}
               </div>
 
               {/* Info */}

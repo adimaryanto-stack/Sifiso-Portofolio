@@ -31,6 +31,7 @@ export async function createPost(formData: FormData) {
     const slug = formData.get("slug") as string;
     const excerpt = formData.get("excerpt") as string;
     const content = formData.get("content") as string;
+    const coverImage = formData.get("coverImage") as string;
     const isPublished = formData.get("isPublished") === "true";
 
     const data = await db.insert(blogPosts).values({
@@ -38,6 +39,7 @@ export async function createPost(formData: FormData) {
       slug,
       excerpt,
       content,
+      coverImage: coverImage || null,
       isPublished,
       publishedAt: isPublished ? new Date() : null,
     }).returning();
@@ -57,6 +59,7 @@ export async function updatePost(id: string, formData: FormData) {
     const slug = formData.get("slug") as string;
     const excerpt = formData.get("excerpt") as string;
     const content = formData.get("content") as string;
+    const coverImage = formData.get("coverImage") as string;
     const isPublished = formData.get("isPublished") === "true";
 
     const data = await db.update(blogPosts).set({
@@ -64,6 +67,7 @@ export async function updatePost(id: string, formData: FormData) {
       slug,
       excerpt,
       content,
+      coverImage: coverImage || null,
       isPublished,
       updatedAt: new Date(),
     }).where(eq(blogPosts.id, id)).returning();

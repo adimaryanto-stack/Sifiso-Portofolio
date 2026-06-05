@@ -7,10 +7,33 @@ import { Send, CheckCircle2 } from "lucide-react";
 import { sendInquiry } from "@/lib/actions/inquiries";
 import { v4 as uuidv4 } from "uuid";
 
-export function ContactForm() {
+export function ContactForm({ generalInfo }: { generalInfo?: any }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
+
+  const info = generalInfo || {};
+  const email = info.email || "adimaryanto@gmail.com";
+  const github = info.github || "";
+  const linkedin = info.linkedin || "";
+  const twitter = info.twitter || "";
+  const instagram = info.instagram || "";
+  const dribbble = info.dribbble || "";
+  
+  let whatsappNumber = info.whatsapp || "";
+  let whatsappLink = "";
+  if (whatsappNumber) {
+    if (whatsappNumber.startsWith("http://") || whatsappNumber.startsWith("https://")) {
+      whatsappLink = whatsappNumber;
+      whatsappNumber = "WhatsApp Chat";
+    } else {
+      const cleanNumber = whatsappNumber.replace(/[^0-9]/g, "");
+      whatsappLink = `https://wa.me/${cleanNumber}`;
+    }
+  } else {
+    whatsappLink = "https://wa.me/6281234567890";
+    whatsappNumber = "+62 812 3456 7890";
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -63,17 +86,18 @@ export function ContactForm() {
               <div>
                 <div className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Direct Contact</div>
                 <div className="flex flex-col space-y-4">
-                  <a href="mailto:adimaryanto@gmail.com" className="text-2xl font-bold hover:text-primary transition-colors">adimaryanto@gmail.com</a>
-                  <a href="https://wa.me/6281234567890" target="_blank" rel="noopener noreferrer" className="text-2xl font-bold text-green-500 hover:text-green-400 transition-colors">WhatsApp: +62 812 3456 7890</a>
+                  {email && <a href={`mailto:${email}`} className="text-2xl font-bold hover:text-primary transition-colors">{email}</a>}
+                  {whatsappLink && <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="text-2xl font-bold text-green-500 hover:text-green-400 transition-colors">WhatsApp: {whatsappNumber}</a>}
                 </div>
               </div>
               <div>
                 <div className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Socials</div>
                 <div className="flex flex-wrap gap-4 text-sm font-black uppercase tracking-widest">
-                  <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">Dribbble</a>
-                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">LinkedIn</a>
-                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">Twitter</a>
-                  <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">Instagram</a>
+                  {dribbble && <a href={dribbble} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">Dribbble</a>}
+                  {linkedin && <a href={linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">LinkedIn</a>}
+                  {twitter && <a href={twitter} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">Twitter</a>}
+                  {instagram && <a href={instagram} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">Instagram</a>}
+                  {github && <a href={github} target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-300">GitHub</a>}
                 </div>
               </div>
             </div>

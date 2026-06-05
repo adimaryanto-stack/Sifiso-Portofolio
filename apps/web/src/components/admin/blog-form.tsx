@@ -6,7 +6,7 @@ import { Button } from "@sifiso/ui/components/button";
 import { ArrowLeft, Save, Loader2, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { createPost, updatePost } from "@/lib/actions/blog";
-import Image from "next/image";
+import { ImageUpload } from "@/components/admin/image-upload";
 
 export function BlogForm({ post }: { post?: any }) {
   const router = useRouter();
@@ -17,6 +17,7 @@ export function BlogForm({ post }: { post?: any }) {
   const [slug, setSlug] = useState(post?.slug || "");
   const [excerpt, setExcerpt] = useState(post?.excerpt || "");
   const [content, setContent] = useState(post?.content || "");
+  const [coverImage, setCoverImage] = useState(post?.coverImage || "");
   const [isPublished, setIsPublished] = useState(post?.isPublished || false);
 
   const generateSlug = (val: string) => {
@@ -39,6 +40,7 @@ export function BlogForm({ post }: { post?: any }) {
     formData.append("slug", slug);
     formData.append("excerpt", excerpt);
     formData.append("content", content);
+    formData.append("coverImage", coverImage);
     formData.append("isPublished", isPublished ? "true" : "false");
 
     startTransition(async () => {
@@ -107,6 +109,23 @@ export function BlogForm({ post }: { post?: any }) {
                 placeholder="the-future-of-web-design"
               />
             </div>
+          </div>
+
+          <div className="space-y-4">
+            <label className="text-sm font-bold uppercase tracking-widest text-secondary block">Cover Image / Thumbnail</label>
+            {coverImage && (
+              <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-2xl border border-border group">
+                <img 
+                  src={coverImage} 
+                  alt="Cover preview" 
+                  className="w-full h-full object-cover transition-transform group-hover:scale-110" 
+                />
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                   <span className="text-xs font-bold text-white uppercase tracking-widest">Selected Image</span>
+                </div>
+              </div>
+            )}
+            <ImageUpload onUploadSuccess={setCoverImage} />
           </div>
 
           <div className="space-y-2">

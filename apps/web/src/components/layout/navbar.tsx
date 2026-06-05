@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Button } from "@sifiso/ui/components/button";
 import { cn } from "@sifiso/ui/lib/utils";
 import { Menu, X } from "lucide-react";
-import { LanguageSwitcher } from "./language-switcher";
+
 
 const navItems = [
   { name: "Home", href: "/#home" },
@@ -16,7 +16,7 @@ const navItems = [
   { name: "Contact", href: "/#contact" },
 ];
 
-export function Navbar() {
+export function Navbar({ generalInfo }: { generalInfo?: any }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -28,6 +28,11 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const info = generalInfo || {};
+  const logoType = info.logoType || "text";
+  const logoText = info.logoText || "Sifiso";
+  const logoUrl = info.logoUrl || "";
+
   return (
     <nav
       className={cn(
@@ -38,8 +43,18 @@ export function Navbar() {
       )}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-black tracking-tighter">
-          Sifiso<span className="text-primary">...</span>
+        <Link href="/" className="flex items-center">
+          {logoType === "image" && logoUrl ? (
+            <img 
+              src={logoUrl} 
+              alt={logoText} 
+              className="h-8 w-auto object-contain max-w-[150px]"
+            />
+          ) : (
+            <span className="text-2xl font-black tracking-tighter text-foreground hover:text-primary transition-colors">
+              {logoText}<span className="text-primary">...</span>
+            </span>
+          )}
         </Link>
 
         {/* Desktop Menu */}
@@ -53,7 +68,7 @@ export function Navbar() {
               {item.name}
             </Link>
           ))}
-          <LanguageSwitcher />
+
           <Link href="/get-started">
             <Button className="glow-red">Get in Touch</Button>
           </Link>
@@ -81,7 +96,7 @@ export function Navbar() {
               {item.name}
             </Link>
           ))}
-          <LanguageSwitcher />
+
           <Link href="/get-started" className="w-full" onClick={() => setMobileMenuOpen(false)}>
             <Button className="w-full glow-red">Get in Touch</Button>
           </Link>

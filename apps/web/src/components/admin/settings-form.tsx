@@ -4,12 +4,17 @@ import React, { useState, useTransition } from "react";
 import { Button } from "@sifiso/ui/components/button";
 import { Save, Globe, Info, User, Loader2 } from "lucide-react";
 import { updateSeoSettings, updateGeneralSettings } from "@/lib/actions/settings";
+import { ImageUpload } from "@/components/admin/image-upload";
 
 export function SettingsForm({ initialSeo, initialGeneral }: { initialSeo: any, initialGeneral: any }) {
   const [loadingSeo, startSeoTransition] = useTransition();
   const [loadingGeneral, startGeneralTransition] = useTransition();
   const [statusSeo, setStatusSeo] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [statusGeneral, setStatusGeneral] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  // Logo settings states
+  const [logoType, setLogoType] = useState<"text" | "image">(initialGeneral?.logoType || "text");
+  const [logoUrl, setLogoUrl] = useState<string>(initialGeneral?.logoUrl || "");
 
   async function handleSeoSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,6 +35,8 @@ export function SettingsForm({ initialSeo, initialGeneral }: { initialSeo: any, 
     e.preventDefault();
     setStatusGeneral(null);
     const formData = new FormData(e.currentTarget);
+    formData.set("logoUrl", logoUrl);
+
     startGeneralTransition(async () => {
       const result = await updateGeneralSettings(formData);
       if (result.success) {
@@ -98,6 +105,32 @@ export function SettingsForm({ initialSeo, initialGeneral }: { initialSeo: any, 
                 defaultValue={initialSeo?.generator || "Next.js, React, Framer Motion, Portfolio"}
               />
             </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-secondary">
+                Google Site Verification (Google Meta)
+              </label>
+              <input
+                name="googleSiteVerification"
+                type="text"
+                placeholder="googlesiteverification12345..."
+                className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-medium text-sm"
+                defaultValue={initialSeo?.googleSiteVerification || ""}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-secondary">
+                Google Analytics ID (G-XXXXXXXXXX)
+              </label>
+              <input
+                name="googleAnalyticsId"
+                type="text"
+                placeholder="G-XXXXXXXXXX"
+                className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-medium text-sm"
+                defaultValue={initialSeo?.googleAnalyticsId || ""}
+              />
+            </div>
           </div>
 
           {statusSeo && (
@@ -140,6 +173,57 @@ export function SettingsForm({ initialSeo, initialGeneral }: { initialSeo: any, 
 
         <form onSubmit={handleGeneralSubmit} className="p-8 space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div className="space-y-3 sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6 p-6 rounded-3xl border border-border bg-surface-elevated/10">
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-secondary flex items-center">
+                  Logo Display Type
+                </label>
+                <select
+                  name="logoType"
+                  value={logoType}
+                  onChange={(e) => setLogoType(e.target.value as any)}
+                  className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-bold text-sm text-foreground appearance-none cursor-pointer"
+                >
+                  <option value="text">Text Logo (e.g. Brand Name)</option>
+                  <option value="image">Image Logo (Upload custom graphic)</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs font-black uppercase tracking-widest text-secondary flex items-center">
+                  Logo Text / Brand Name
+                </label>
+                <input
+                  name="logoText"
+                  type="text"
+                  placeholder="e.g. Sifiso"
+                  className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-bold text-sm"
+                  defaultValue={initialGeneral?.logoText || "Sifiso"}
+                />
+              </div>
+
+              {logoType === "image" && (
+                <div className="space-y-2 sm:col-span-2 pt-4 border-t border-border/50 animate-in fade-in duration-300">
+                  <label className="text-xs font-black uppercase tracking-widest text-secondary flex items-center">
+                    Upload/Select Brand Logo Image
+                  </label>
+                  {logoUrl && (
+                    <div className="relative h-12 max-w-[200px] overflow-hidden rounded-xl border border-border bg-surface-elevated mb-3 flex items-center justify-center p-2">
+                      <img 
+                        src={logoUrl} 
+                        alt="Logo Preview" 
+                        className="max-h-full max-w-full object-contain" 
+                      />
+                    </div>
+                  )}
+                  <ImageUpload 
+                    onUploadSuccess={setLogoUrl} 
+                    defaultImage={logoUrl}
+                  />
+                </div>
+              )}
+            </div>
+
             <div className="space-y-3 sm:col-span-2">
               <label className="text-xs font-black uppercase tracking-widest text-secondary flex items-center">
                 Short Bio
@@ -202,6 +286,45 @@ export function SettingsForm({ initialSeo, initialGeneral }: { initialSeo: any, 
                 placeholder="https://linkedin.com/in/..."
                 className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-medium text-sm"
                 defaultValue={initialGeneral?.linkedin || ""}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-secondary">
+                WhatsApp Number / Link
+              </label>
+              <input
+                name="whatsapp"
+                type="text"
+                placeholder="+62 8..."
+                className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-medium text-sm"
+                defaultValue={initialGeneral?.whatsapp || ""}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-secondary">
+                Instagram URL
+              </label>
+              <input
+                name="instagram"
+                type="url"
+                placeholder="https://instagram.com/..."
+                className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-medium text-sm"
+                defaultValue={initialGeneral?.instagram || ""}
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-widest text-secondary">
+                Dribbble URL
+              </label>
+              <input
+                name="dribbble"
+                type="url"
+                placeholder="https://dribbble.com/..."
+                className="w-full px-6 py-4 bg-surface border border-border rounded-2xl focus:outline-none focus:border-primary transition-all font-medium text-sm"
+                defaultValue={initialGeneral?.dribbble || ""}
               />
             </div>
           </div>

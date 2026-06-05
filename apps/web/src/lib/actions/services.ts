@@ -20,6 +20,11 @@ export async function createService(formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const iconName = formData.get("iconName") as string;
+    const processStr = formData.get("process") as string;
+    const benefitsStr = formData.get("benefits") as string;
+
+    const process = processStr ? processStr.split("\n").map(s => s.trim()).filter(Boolean) : null;
+    const benefits = benefitsStr ? benefitsStr.split("\n").map(s => s.trim()).filter(Boolean) : null;
     
     if (!title) {
       return { success: false, error: "Title is required" };
@@ -29,6 +34,8 @@ export async function createService(formData: FormData) {
       title,
       description: description || null,
       iconName: iconName || null,
+      process: process || null,
+      benefits: benefits || null,
       isActive: true,
       sortOrder: 0,
     }).returning();
@@ -51,6 +58,11 @@ export async function updateService(id: string, formData: FormData) {
     const iconName = formData.get("iconName") as string;
     const isActiveStr = formData.get("isActive") as string;
     const isActive = isActiveStr === "true";
+    const processStr = formData.get("process") as string;
+    const benefitsStr = formData.get("benefits") as string;
+
+    const process = processStr ? processStr.split("\n").map(s => s.trim()).filter(Boolean) : null;
+    const benefits = benefitsStr ? benefitsStr.split("\n").map(s => s.trim()).filter(Boolean) : null;
 
     if (!title) {
       return { success: false, error: "Title is required" };
@@ -61,6 +73,8 @@ export async function updateService(id: string, formData: FormData) {
         title,
         description: description || null,
         iconName: iconName || null,
+        process: process || null,
+        benefits: benefits || null,
         isActive,
       })
       .where(eq(services.id, id))

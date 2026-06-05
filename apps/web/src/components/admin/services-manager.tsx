@@ -103,6 +103,16 @@ export function ServicesManager({ initialServices }: { initialServices: any[] })
               <label className="text-xs font-bold text-secondary mb-1 block">Description</label>
               <textarea name="description" rows={3} className="w-full px-4 py-2 bg-surface border border-border rounded-xl focus:border-primary focus:outline-none"></textarea>
             </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="text-xs font-bold text-secondary mb-1 block">Process Steps (one per line)</label>
+                <textarea name="process" placeholder="e.g.&#10;Discovery&#10;Design&#10;Development&#10;Delivery" rows={4} className="w-full px-4 py-2 bg-surface border border-border rounded-xl focus:border-primary focus:outline-none"></textarea>
+              </div>
+              <div>
+                <label className="text-xs font-bold text-secondary mb-1 block">Key Benefits (one per line)</label>
+                <textarea name="benefits" placeholder="e.g.&#10;High Quality&#10;Fast Delivery&#10;24/7 Support" rows={4} className="w-full px-4 py-2 bg-surface border border-border rounded-xl focus:border-primary focus:outline-none"></textarea>
+              </div>
+            </div>
             <div className="flex justify-end space-x-2 pt-2">
               <Button type="button" variant="ghost" onClick={() => setShowNewForm(false)}>Cancel</Button>
               <Button type="submit" disabled={isPending} className="flex items-center space-x-2">
@@ -138,6 +148,16 @@ export function ServicesManager({ initialServices }: { initialServices: any[] })
                 <div>
                   <label className="text-xs font-bold text-secondary mb-1 block">Description</label>
                   <textarea name="description" defaultValue={service.description || ""} rows={2} className="w-full px-4 py-2 bg-surface border border-border rounded-xl focus:border-primary focus:outline-none"></textarea>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-xs font-bold text-secondary mb-1 block">Process Steps (one per line)</label>
+                    <textarea name="process" defaultValue={service.process ? (service.process as string[]).join("\n") : ""} placeholder="e.g.&#10;Discovery&#10;Design&#10;Development&#10;Delivery" rows={4} className="w-full px-4 py-2 bg-surface border border-border rounded-xl focus:border-primary focus:outline-none"></textarea>
+                  </div>
+                  <div>
+                    <label className="text-xs font-bold text-secondary mb-1 block">Key Benefits (one per line)</label>
+                    <textarea name="benefits" defaultValue={service.benefits ? (service.benefits as string[]).join("\n") : ""} placeholder="e.g.&#10;High Quality&#10;Fast Delivery&#10;24/7 Support" rows={4} className="w-full px-4 py-2 bg-surface border border-border rounded-xl focus:border-primary focus:outline-none"></textarea>
+                  </div>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-border mt-4">
                   <label className="flex items-center space-x-2 cursor-pointer">

@@ -25,6 +25,11 @@ export function ProjectForm({ initialData }: { initialData?: typeof projects.$in
       slug: (formData.get("title") as string).toLowerCase().replace(/[^a-z0-9]+/g, "-"),
       description: formData.get("description") as string,
       category: formData.get("category") as string,
+      projectStatus: formData.get("projectStatus") as string,
+      liveUrl: formData.get("liveUrl") as string,
+      clientName: formData.get("clientName") as string,
+      timeline: formData.get("timeline") as string,
+      tools: formData.get("tools") as string,
       isPublished: formData.get("isPublished") === "on",
       thumbnailUrl: thumbnailUrl,
     };
@@ -71,6 +76,68 @@ export function ProjectForm({ initialData }: { initialData?: typeof projects.$in
           className="w-full bg-surface-elevated border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
           placeholder="e.g. Web Development"
         />
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-2">
+          <label htmlFor="projectStatus" className="text-sm font-medium">Project Status</label>
+          <select 
+            id="projectStatus" 
+            name="projectStatus"
+            defaultValue={initialData?.projectStatus || "offline"}
+            className="w-full bg-surface-elevated border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+          >
+            <option value="live">Live Project</option>
+            <option value="offline">Offline Project</option>
+          </select>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="liveUrl" className="text-sm font-medium">Live Website URL</label>
+          <input 
+            id="liveUrl" 
+            name="liveUrl" 
+            type="url"
+            defaultValue={initialData?.liveUrl || ""}
+            className="w-full bg-surface-elevated border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+            placeholder="e.g. https://aura-commerce.com"
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="space-y-2">
+          <label htmlFor="clientName" className="text-sm font-medium">Client Name</label>
+          <input 
+            id="clientName" 
+            name="clientName" 
+            defaultValue={initialData?.clientName || ""}
+            className="w-full bg-surface-elevated border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+            placeholder="e.g. Aura Organics"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="timeline" className="text-sm font-medium">Timeline</label>
+          <input 
+            id="timeline" 
+            name="timeline" 
+            defaultValue={initialData?.timeline || ""}
+            className="w-full bg-surface-elevated border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+            placeholder="e.g. 2024"
+          />
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="tools" className="text-sm font-medium">Technical Arsenal</label>
+          <input 
+            id="tools" 
+            name="tools" 
+            defaultValue={initialData?.tools || ""}
+            className="w-full bg-surface-elevated border border-border rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+            placeholder="e.g. Next.js, Tailwind, Postgres"
+          />
+        </div>
       </div>
 
       <div className="space-y-2">

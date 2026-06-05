@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
 import { 
   LayoutDashboard, 
@@ -13,16 +13,17 @@ import {
   Settings,
   LogOut,
   ShieldAlert,
-  ExternalLink,
   Layers,
   DollarSign,
   MessageSquareQuote,
   GitBranch,
-  FileText
+  FileText,
+  Globe
 } from "lucide-react";
 
 export function AdminSidebar() {
   const router = useRouter();
+  const pathname = usePathname();
 
   async function handleSignOut() {
     await signOut({
@@ -33,66 +34,114 @@ export function AdminSidebar() {
       },
     });
   }
-  const navigation = [
+
+  // Check if a nav item is the current active page
+  function isActive(href: string) {
+    // Strip locale prefix for comparison (e.g. /en/admin -> /admin)
+    const cleanPath = pathname.replace(/^\/[a-z]{2}(?=\/)/, "");
+    if (href === "/admin") return cleanPath === "/admin";
+    return cleanPath.startsWith(href);
+  }
+
+  const mainNav = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Projects", href: "/admin/projects", icon: FolderKanban },
     { name: "Services", href: "/admin/services", icon: Layers },
     { name: "Pricing", href: "/admin/pricing", icon: DollarSign },
     { name: "Creative Process", href: "/admin/creative-process", icon: GitBranch },
+  ];
+
+  const contentNav = [
     { name: "Quotes", href: "/admin/quotes", icon: MessageSquareQuote },
     { name: "Inquiries", href: "/admin/inquiries", icon: Mail },
     { name: "Blog", href: "/admin/blog", icon: FileText },
     { name: "Testimonials", href: "/admin/testimonials", icon: Quote },
-    { name: "Security Logs", href: "/admin/security", icon: ShieldAlert },
-    { name: "Image Gallery", href: "/admin/gallery", icon: ImageIcon },
   ];
 
+  const systemNav = [
+    { name: "Gallery", href: "/admin/gallery", icon: ImageIcon },
+    { name: "Settings & SEO", href: "/admin/settings", icon: Settings },
+  ];
+
+  function NavItem({ item }: { item: { name: string; href: string; icon: React.ComponentType<{ size?: number; className?: string }> } }) {
+    const Icon = item.icon;
+    const active = isActive(item.href);
+    return (
+      <Link
+        href={item.href}
+        className={`flex items-center gap-2.5 px-3 py-2 text-[13px] rounded-lg transition-all group ${
+          active
+            ? "bg-primary/10 text-primary font-semibold"
+            : "text-secondary hover:text-foreground hover:bg-surface-elevated"
+        }`}
+      >
+        <Icon size={16} className={active ? "text-primary" : "group-hover:text-primary transition-colors"} />
+        <span>{item.name}</span>
+      </Link>
+    );
+  }
+
+  function SectionLabel({ children }: { children: React.ReactNode }) {
+    return (
+      <p className="px-3 pt-3 pb-1 text-[10px] font-bold uppercase tracking-[0.12em] text-secondary/50 select-none">
+        {children}
+      </p>
+    );
+  }
+
   return (
-    <div className="h-full w-64 bg-surface border-r border-border flex flex-col">
-      <div className="h-16 flex items-center px-6 border-b border-border">
-        <span className="text-xl font-black">Sifiso<span className="text-primary italic">Admin</span></span>
-      </div>
-      
-      <div className="flex-1 py-6 px-4 space-y-2">
-        {navigation.map((item) => {
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="flex items-center space-x-3 px-4 py-3 text-secondary hover:text-foreground hover:bg-surface-elevated rounded-xl transition-all group"
-            >
-              <Icon size={20} className="group-hover:text-primary transition-colors" />
-              <span className="font-medium">{item.name}</span>
-            </Link>
-          );
-        })}
+    <aside className="h-full w-60 bg-surface border-r border-border flex flex-col shrink-0">
+      {/* Logo */}
+      <div className="h-14 flex items-center px-5 border-b border-border shrink-0">
+        <Link href="/admin" className="flex items-center">
+          <span className="text-lg font-black tracking-tight">
+            Sifiso<span className="text-primary italic">Admin</span>
+          </span>
+        </Link>
       </div>
 
-      <div className="p-4 border-t border-border">
+      {/* Navigation — scrollable on very short screens */}
+      <nav className="flex-1 overflow-y-auto px-3 py-3 min-h-0">
+        <SectionLabel>Main</SectionLabel>
+        <div className="space-y-0.5">
+          {mainNav.map((item) => (
+            <NavItem key={item.name} item={item} />
+          ))}
+        </div>
+
+        <SectionLabel>Content</SectionLabel>
+        <div className="space-y-0.5">
+          {contentNav.map((item) => (
+            <NavItem key={item.name} item={item} />
+          ))}
+        </div>
+
+        <SectionLabel>System</SectionLabel>
+        <div className="space-y-0.5">
+          {systemNav.map((item) => (
+            <NavItem key={item.name} item={item} />
+          ))}
+        </div>
+      </nav>
+
+      {/* Footer actions — always pinned at bottom */}
+      <div className="px-3 py-3 border-t border-border shrink-0 space-y-0.5">
         <Link
           href="/"
           target="_blank"
-          className="flex items-center space-x-3 px-4 py-3 text-secondary hover:text-foreground hover:bg-surface-elevated rounded-xl transition-all group mb-2"
+          className="flex items-center gap-2.5 px-3 py-2 text-[13px] text-blue-500 hover:bg-blue-50 rounded-lg transition-all group"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-[#4A90E2] transition-colors"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-          <span className="font-bold text-[#4A90E2]">Preview Web</span>
-        </Link>
-        <Link
-          href="/admin/settings"
-          className="flex items-center space-x-3 px-4 py-3 text-secondary hover:text-foreground hover:bg-surface-elevated rounded-xl transition-all group"
-        >
-          <Settings size={20} className="group-hover:text-primary transition-colors" />
-          <span className="font-medium">Settings & SEO</span>
+          <Globe size={16} />
+          <span className="font-semibold">Preview Site</span>
         </Link>
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center space-x-3 px-4 py-3 text-secondary hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all group mt-2"
+          className="w-full flex items-center gap-2.5 px-3 py-2 text-[13px] text-secondary hover:text-red-500 hover:bg-red-50 rounded-lg transition-all group"
         >
-          <LogOut size={20} className="group-hover:text-red-500 transition-colors" />
+          <LogOut size={16} className="group-hover:text-red-500 transition-colors" />
           <span className="font-medium">Sign Out</span>
         </button>
       </div>
-    </div>
+    </aside>
   );
 }

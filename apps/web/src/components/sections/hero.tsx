@@ -4,8 +4,29 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@sifiso/ui/components/button";
 import Link from "next/link";
+import { ArrowDown } from "lucide-react";
 
-export function Hero() {
+interface HeroProps {
+  title?: string;
+  description?: string;
+  ctaText?: string;
+  seeWorkText?: string;
+  availableText?: string;
+}
+
+export function Hero({
+  title,
+  description,
+  ctaText,
+  seeWorkText,
+  availableText
+}: HeroProps = {}) {
+  // Split a title like "Modern Design & Development Portfolio" into
+  // first word + rest for styling: "MODERN" in white, rest in primary
+  const titleWords = (title || "I Design Websites").split(" ");
+  const firstWord = titleWords[0];
+  const restWords = titleWords.slice(1).join(" ");
+
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       {/* Background Glow */}
@@ -24,32 +45,50 @@ export function Hero() {
             transition={{ delay: 0.2 }}
             className="inline-block px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold tracking-widest uppercase mb-6"
           >
-            Available for Projects
+            {availableText || "Available for Projects"}
           </motion.div>
 
-          <h1 className="text-5xl md:text-7xl font-black leading-[1.1] mb-6">
-            I <span className="text-primary">DESIGN</span> WEBSITES.
-            <br />
-            I STAY UP ALL NIGHT.
+          <h1 className="text-5xl md:text-7xl font-black leading-[1.05] mb-6 uppercase tracking-tighter">
+            {firstWord}
+            {restWords && (
+              <>
+                {" "}
+                <span className="text-primary italic">{restWords}</span>
+              </>
+            )}
           </h1>
 
           <p className="text-xl text-secondary mb-10 max-w-lg leading-relaxed">
-            Staring at my monitor making sure my pages are{" "}
-            <span className="text-foreground font-bold italic tracking-wide">AWESOME...</span>
+            {description || (
+              <>
+                Staring at my monitor making sure my pages are{" "}
+                <span className="text-foreground font-bold italic tracking-wide">AWESOME...</span>
+              </>
+            )}
           </p>
 
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link href="/#contact">
+            <Link href="/#work">
               <Button className="h-14 px-10 text-lg glow-red">
-                Contact me
+                {ctaText || "See my work"}
               </Button>
             </Link>
-            <Link href="/#work">
+            <Link href="/#contact">
               <Button variant="outline" className="h-14 px-10 text-lg border-border hover:bg-surface">
-                See my work
+                {seeWorkText || "Contact me"}
               </Button>
             </Link>
           </div>
+
+          {/* Scroll indicator */}
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            className="hidden lg:flex items-center gap-2 mt-16 text-secondary/50"
+          >
+            <ArrowDown size={16} />
+            <span className="text-xs uppercase tracking-widest font-bold">Scroll to explore</span>
+          </motion.div>
         </motion.div>
 
         {/* Hero Decorative Element */}

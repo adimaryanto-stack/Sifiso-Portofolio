@@ -3,8 +3,39 @@
 import React from "react";
 import { motion } from "framer-motion";
 
+const defaultSteps = [
+  {
+    id: "step-1",
+    stepNumber: "01",
+    title: "Discovery & Strategy",
+    subtitle: "Understanding the Vision",
+    description: "Deep dive into your brand, business goals, and target audience to define a bulletproof digital strategy."
+  },
+  {
+    id: "step-2",
+    stepNumber: "02",
+    title: "Design & UX Architecture",
+    subtitle: "Aesthetic & Flow",
+    description: "Creating wireframes, user flows, and high-fidelity prototypes that combine usability with premium art direction."
+  },
+  {
+    id: "step-3",
+    stepNumber: "03",
+    title: "Development & Engineering",
+    subtitle: "Clean Code & Motion",
+    description: "Translating static designs into modern, lightning-fast web experiences using Next.js, Tailwind, and interactive animations."
+  },
+  {
+    id: "step-4",
+    stepNumber: "04",
+    title: "Testing & Deployment",
+    subtitle: "Launch & Excellence",
+    description: "Rigorous performance optimization, SEO auditing, and responsive testing before deploying the site to a global CDN."
+  }
+];
+
 export function CreativeProcess({ steps }: { steps: any[] }) {
-  if (!steps || steps.length === 0) return null;
+  const displaySteps = steps && steps.length > 0 ? steps : defaultSteps;
 
   return (
     <section className="py-24 relative overflow-hidden">
@@ -32,7 +63,7 @@ export function CreativeProcess({ steps }: { steps: any[] }) {
           <div className="absolute left-8 top-0 bottom-0 w-px bg-border md:hidden"></div>
 
           <div className="space-y-12 md:space-y-24">
-            {steps.map((step, index) => {
+            {displaySteps.map((step, index) => {
               const isEven = index % 2 === 0;
 
               return (

@@ -17,7 +17,7 @@
 - Memberikan kesan **premium** dengan "Bright Mode" Admin yang bersih dan Landing Page yang futuristik.
 - Menyediakan **Offline-First Development** menggunakan database lokal tanpa ketergantungan internet.
 - Mengoptimalkan **SEO** melalui dashboard meta-editor yang terintegrasi (Dynamic SEO).
-- **[v2.0]** Mendukung lokalisasi i18n (Multi-bahasa) untuk jangkauan global.
+- **[v2.0]** Menggunakan rute default bahasa Inggris tanpa prefix untuk kesederhanaan dan mencegah error routing.
 - **[v2.0]** Menawarkan sistem Portal Klien, pelacakan proyek, dan manajemen *invoicing* terintegrasi.
 
 ---
@@ -737,7 +737,7 @@ Fitur-fitur advanced seperti analytics, dynamic OG images, dan email notificatio
 | Analytics dashboard | Enhancement | v1.2 |
 | Dark/Light mode toggle | Design is dark-only MVP | v1.2 |
 | Blog/Articles section | Future expansion | v2.0 |
-| Multi-language support | Future expansion | v2.0 |
+| Multi-language support | Removed for stability (English default) | v2.0 |
 | Admin — Services CRUD | Can use seed data | v1.1 |
 | Admin — Site Settings | Can use env vars | v1.1 |
 | Drag-and-drop reorder | UX enhancement | v1.1 |
@@ -1001,6 +1001,6 @@ POST   /api/upload                  → Upload image
 
 #### v2.0 (Month 2)
 - [x] Blog section
-- [x] Multi-language support (i18n)
+- [x] Single language routing (English default prefix-less routing)
 - [x] Client portal (project tracking)
 - [x] Invoice/proposal integration

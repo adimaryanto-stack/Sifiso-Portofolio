@@ -20,8 +20,10 @@ export async function updateSeoSettings(formData: FormData) {
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const generator = formData.get("generator") as string;
+    const googleSiteVerification = formData.get("googleSiteVerification") as string;
+    const googleAnalyticsId = formData.get("googleAnalyticsId") as string;
 
-    const seoData = { title, description, generator };
+    const seoData = { title, description, generator, googleSiteVerification, googleAnalyticsId };
 
     const existing = await db.select().from(siteSettings).where(eq(siteSettings.key, "seo_metadata")).limit(1);
     
@@ -48,8 +50,14 @@ export async function updateGeneralSettings(formData: FormData) {
     const github = formData.get("github") as string;
     const linkedin = formData.get("linkedin") as string;
     const twitter = formData.get("twitter") as string;
+    const whatsapp = formData.get("whatsapp") as string;
+    const instagram = formData.get("instagram") as string;
+    const dribbble = formData.get("dribbble") as string;
+    const logoType = formData.get("logoType") as string;
+    const logoText = formData.get("logoText") as string;
+    const logoUrl = formData.get("logoUrl") as string;
 
-    const generalData = { bio, email, github, linkedin, twitter };
+    const generalData = { bio, email, github, linkedin, twitter, whatsapp, instagram, dribbble, logoType, logoText, logoUrl };
 
     const existing = await db.select().from(siteSettings).where(eq(siteSettings.key, "general_info")).limit(1);
     

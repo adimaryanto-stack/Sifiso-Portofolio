@@ -3,20 +3,34 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const defaultQuotes = [
+  {
+    content: "Design is not just what it looks like and feels like. Design is how it works.",
+    author: "Steve Jobs"
+  },
+  {
+    content: "Simplicity is the ultimate sophistication.",
+    author: "Leonardo da Vinci"
+  },
+  {
+    content: "Make it simple, but significant.",
+    author: "Don Draper"
+  }
+];
+
 export function QuotesSection({ quotes }: { quotes: any[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const displayQuotes = quotes && quotes.length > 0 ? quotes : defaultQuotes;
 
   useEffect(() => {
-    if (!quotes || quotes.length <= 1) return;
+    if (!displayQuotes || displayQuotes.length <= 1) return;
     
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % quotes.length);
+      setCurrentIndex((prev) => (prev + 1) % displayQuotes.length);
     }, 8000); // rotate every 8 seconds
 
     return () => clearInterval(interval);
-  }, [quotes]);
-
-  if (!quotes || quotes.length === 0) return null;
+  }, [displayQuotes]);
 
   return (
     <section className="py-24 bg-surface-elevated overflow-hidden border-y border-border">
@@ -36,18 +50,18 @@ export function QuotesSection({ quotes }: { quotes: any[] }) {
               className="space-y-6"
             >
               <h3 className="text-2xl md:text-4xl font-serif italic text-foreground leading-relaxed">
-                &ldquo;{quotes[currentIndex].content}&rdquo;
+                &ldquo;{displayQuotes[currentIndex].content}&rdquo;
               </h3>
               <p className="text-sm font-black uppercase tracking-widest text-primary">
-                — {quotes[currentIndex].author}
+                — {displayQuotes[currentIndex].author}
               </p>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {quotes.length > 1 && (
+        {displayQuotes.length > 1 && (
           <div className="flex justify-center mt-12 space-x-3">
-            {quotes.map((_, idx) => (
+            {displayQuotes.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}

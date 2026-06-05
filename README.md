@@ -21,7 +21,7 @@ Sifiso is a premium, high-fidelity multidisciplinary portfolio built for designe
 - **Client Management & Portal:** Fully functional admin dashboard to manage projects, testimonials, and a secure **Client Portal** where clients can track project milestones.
 - **Invoicing System:** Generate invoices from the dashboard and provide printable PDF versions for clients.
 - **Blog System:** Built-in Markdown CMS to manage and publish articles.
-- **Multi-Language (i18n):** Native support for multiple languages (English and Indonesian) via `next-intl`.
+- **Prefix-less Default Routing:** Clean URLs in English by default without locale prefixes, preventing routing issues.
 - **Dynamic SEO Dashboard:** Integrated management for Meta Titles, Descriptions, and Keywords that update the site in real-time.
 - **Real-time Inquiry System:** Functional contact form connected to a backend inbox for lead management.
 - **Hybrid DB Logic:** Seamlessly switches between local SQLite and production PostgreSQL based on environment.

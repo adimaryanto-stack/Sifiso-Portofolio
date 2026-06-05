@@ -151,6 +151,8 @@ export const projects = table("projects", {
   sortOrder: intCol("sort_order").default(0),
   isFeatured: boolCol("is_featured").default(false),
   isPublished: boolCol("is_published").default(false),
+  projectStatus: textCol("project_status").default("offline"),
+  liveUrl: textCol("live_url"),
   createdAt: tsCol("created_at").default(nowHelper()).notNull(),
   updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
   createdBy: textCol("created_by").references(() => user.id, { onDelete: "set null" }),
@@ -174,6 +176,8 @@ export const services = table("services", {
   iconName: textCol("icon_name"),
   sortOrder: intCol("sort_order").default(0),
   isActive: boolCol("is_active").default(true),
+  process: jsonCol("process"),
+  benefits: jsonCol("benefits"),
   createdAt: tsCol("created_at").default(nowHelper()).notNull(),
   updatedAt: tsCol("updated_at").default(nowHelper()).notNull(),
 });

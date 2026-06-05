@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/lib/db";
-import { projectImages, projects } from "@/lib/db/schema";
+import { projectImages, projects, blogPosts } from "@/lib/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { v4 as uuidv4 } from "uuid";
@@ -24,7 +24,86 @@ export async function getAllImages() {
       .leftJoin(projects, eq(projectImages.projectId, projects.id))
       .orderBy(desc(projectImages.createdAt));
 
-    return { success: true, images };
+    // Get all project thumbnails, heroes, and process gallery images
+    const allProjects = await db.select().from(projects);
+    const projectExtraImages: any[] = [];
+    allProjects.forEach((p: any) => {
+      if (p.thumbnailUrl) {
+        projectExtraImages.push({
+          id: `proj-thumb-${p.id}`,
+          imageUrl: p.thumbnailUrl,
+          caption: "Project Thumbnail",
+          sortOrder: null,
+          createdAt: p.createdAt,
+          projectId: p.id,
+          projectTitle: p.title,
+          projectSlug: p.slug,
+          isReadOnly: true,
+        });
+      }
+      if (p.heroImageUrl) {
+        projectExtraImages.push({
+          id: `proj-hero-${p.id}`,
+          imageUrl: p.heroImageUrl,
+          caption: "Project Hero Image",
+          sortOrder: null,
+          createdAt: p.createdAt,
+          projectId: p.id,
+          projectTitle: p.title,
+          projectSlug: p.slug,
+          isReadOnly: true,
+        });
+      }
+      if (p.processGallery && Array.isArray(p.processGallery)) {
+        (p.processGallery as string[]).forEach((imgUrl, idx) => {
+          projectExtraImages.push({
+            id: `proj-proc-${p.id}-${idx}`,
+            imageUrl: imgUrl,
+            caption: `Process Image ${idx + 1}`,
+            sortOrder: null,
+            createdAt: p.createdAt,
+            projectId: p.id,
+            projectTitle: p.title,
+            projectSlug: p.slug,
+            isReadOnly: true,
+          });
+        });
+      }
+    });
+
+    // Get all blog post cover images
+    const allBlogPosts = await db.select().from(blogPosts);
+    const blogImages: any[] = [];
+    allBlogPosts.forEach((b: any) => {
+      if (b.coverImage) {
+        blogImages.push({
+          id: `blog-cover-${b.id}`,
+          imageUrl: b.coverImage,
+          caption: "Blog Cover Image",
+          sortOrder: null,
+          createdAt: b.createdAt,
+          projectId: `blog-${b.id}`,
+          projectTitle: `Blog: ${b.title}`,
+          projectSlug: `blog/${b.slug}`,
+          isReadOnly: true,
+        });
+      }
+    });
+
+    // Merge and sort all images
+    const allMergedImages = [
+      ...images.map((img: any) => ({ ...img, isReadOnly: false })),
+      ...projectExtraImages,
+      ...blogImages
+    ];
+
+    allMergedImages.sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+
+    return { success: true, images: allMergedImages };
   } catch (error: any) {
     console.error("Failed to fetch gallery images", error);
     return { success: false, images: [], error: error.message };
