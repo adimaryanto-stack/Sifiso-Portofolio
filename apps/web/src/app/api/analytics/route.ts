@@ -4,7 +4,13 @@ import { pageViews } from "@/lib/db/schema";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    let body: any = {};
+    try {
+      body = await req.json();
+    } catch (e) {
+      // Empty or invalid body
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
     const { path } = body;
 
     if (!path) {
